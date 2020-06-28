@@ -1,0 +1,7 @@
+
+linter:
+  rules:
+    public_member_api_docs: false
+    prefer_relative_imports: false
+    prefer_const_literals_to_create_immutable: true
+    sort_constructors_first: true

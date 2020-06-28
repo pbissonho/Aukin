@@ -1,0 +1,38 @@
+import 'package:bloc/bloc.dart';
+import 'package:koin_flutter/koin_bloc.dart';
+import 'package:identity_auth/identity_auth.dart';
+import 'login_event.dart';
+import 'login_state.dart';
+
+class LoginBloc extends Bloc<LoginEvent, LoginState> with Disposable {
+  final IdentiyAuth identiyAuth;
+
+  LoginBloc(this.identiyAuth);
+
+  Stream<LoginState> _signInWithCredentials(LoginWithCredentials event) async* {
+    yield LoginLoading();
+    // Delayed Just for test
+    await Future.delayed(Duration(milliseconds: 500));
+
+    try {
+      await identiyAuth.signInWithAccessCredentials(
+        username: event.name,
+        password: event.password,
+      );
+      yield LoginSuccess();
+    } on Exception catch (_) {
+      yield LoginFailure("Login failed.");
+    }
+  }
+
+  @override
+  LoginState get initialState => LoginStarted();
+
+  @override
+  Stream<LoginState> mapEventToState(LoginEvent event) async* {
+    if (event is LoginWithCredentials) yield* _signInWithCredentials(event);
+  }
+
+  @override
+  void dispose() => close();
+}

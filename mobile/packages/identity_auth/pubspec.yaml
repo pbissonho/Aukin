@@ -1,0 +1,15 @@
+name: identity_auth
+description: A User Dart Repository
+
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  meta: ^1.1.8
+  identity_client:
+    path: ../identity_client/
+  rxdart: ^0.24.1  

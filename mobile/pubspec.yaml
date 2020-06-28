@@ -1,0 +1,36 @@
+name: authentication
+version: 1.0.0
+description: Flutter authentication example
+publish_to: none
+
+dependencies:
+  clip_shadow: ^0.2.1
+  corsac_jwt: ^0.2.2
+  dio: ^3.0.9
+  equatable: ^1.1.1
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^4.0.0
+  flutter_custom_clippers: ^1.1.1
+  google_fonts: ^1.0.0
+  identity_auth:
+    path: packages/identity_auth
+  identity_client:
+    path: packages/identity_client/
+  koin: ^0.10.0
+  koin_flutter: ^0.6.3
+  kt_dart: ^0.7.0+1
+  rxdart: ^0.24.1
+  shared_preferences: ^0.5.7+3
+  meta: any
+dev_dependencies:
+  effective_dart: ^1.2.1
+  flutter_test:
+    sdk: flutter
+  koin_test: ^0.11.2
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+flutter:
+  uses-material-design: true
