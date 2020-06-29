@@ -1,11 +1,4 @@
-import 'package:equatable/equatable.dart';
-
 class AccessCredentials {
-  String userName;
-  String password;
-  String refreshToken;
-  String grantType;
-
   AccessCredentials(
       {this.userName, this.password, this.refreshToken, this.grantType});
 
@@ -15,6 +8,11 @@ class AccessCredentials {
     refreshToken = json['RefreshToken'];
     grantType = json['GrantType'];
   }
+
+  String userName;
+  String password;
+  String refreshToken;
+  String grantType;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -27,11 +25,6 @@ class AccessCredentials {
 }
 
 class RegisterCredentials {
-  String userName;
-  String userEmail;
-  String password;
-  String confirmPassword;
-
   RegisterCredentials(
       {this.userName, this.userEmail, this.password, this.confirmPassword});
 
@@ -41,6 +34,11 @@ class RegisterCredentials {
     password = json['password'];
     confirmPassword = json['confirmPassword'];
   }
+
+  String userName;
+  String userEmail;
+  String password;
+  String confirmPassword;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -53,13 +51,6 @@ class RegisterCredentials {
 }
 
 class IdentityToken {
-  bool authenticated;
-  String created;
-  String expiration;
-  String accessToken;
-  String refreshToken;
-  String message;
-
   IdentityToken(
       {this.authenticated = false,
       this.created = '',
@@ -77,6 +68,13 @@ class IdentityToken {
     message = json['message'];
   }
 
+  bool authenticated;
+  String created;
+  String expiration;
+  String accessToken;
+  String refreshToken;
+  String message;
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['authenticated'] = this.authenticated;
@@ -87,23 +85,4 @@ class IdentityToken {
     data['message'] = this.message;
     return data;
   }
-}
-
-class UserCredentials with EquatableMixin {
-  String name;
-  String password;
-
-  UserCredentials({this.name, this.password});
-
-  UserCredentials.fromMap(Map<String, dynamic> map) {
-    name = map["name"];
-    password = map["password"];
-  }
-
-  Map<String, dynamic> toJson() {
-    return {"name": name, "password": password};
-  }
-
-  @override
-  List<Object> get props => [name, password];
 }

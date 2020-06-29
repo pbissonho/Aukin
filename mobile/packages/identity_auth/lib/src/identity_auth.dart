@@ -4,20 +4,19 @@ import 'package:meta/meta.dart';
 import 'package:identity_client/identity_client.dart';
 import 'package:corsac_jwt/corsac_jwt.dart';
 
-IdentiyUser _parserToUser(String accessToken) {
-  var decodedToken = new JWT.parse(accessToken);
-  var roles = (decodedToken.claims['role'] as List).map((f) => '$f').toList();
-  var name = decodedToken.claims['unique_name'][0];
-  var user = IdentiyUser(userName: name, roles: roles, email: '');
-  return user;
-}
-
 class IdentiyUser {
+  IdentiyUser({this.userName, this.email, this.roles});
+
+  factory IdentiyUser.fromTokenJson(Map<String, dynamic> claims) {
+    var roles = (claims['role'] as List).map((f) => f.toString()).toList();
+    var name = claims['unique_name'][0];
+    var user = IdentiyUser(userName: name, roles: roles, email: '');
+    return user;
+  }
+
   final String userName;
   final String email;
   final List<String> roles;
-
-  IdentiyUser({this.userName, this.email, this.roles});
 }
 
 enum UserAuthenticationStatus {
@@ -45,9 +44,10 @@ class IdentiyAuth {
     });
   }
 
+//  var decodedToken = new JWT.parse(accessToken);
   Stream<IdentiyUser> get currentUser async* {
-    yield* _client.fresh.currentToken
-        .map((token) => _parserToUser(token.accessToken));
+    yield* _client.fresh.currentToken.map((token) =>
+        IdentiyUser.fromTokenJson(JWT.parse(token.accessToken).claims));
   }
 
   Future<IdentiyUser> signInWithAccessCredentials({
@@ -58,7 +58,7 @@ class IdentiyAuth {
       username: username,
       password: password,
     );
-    return _parserToUser(token.accessToken);
+    IdentiyUser.fromTokenJson(JWT.parse(token.accessToken).claims);
   }
 
   Future<void> createUserWithRegisterCredentials({

@@ -4,9 +4,9 @@ import 'models.dart';
 class IdentityServiceException implements Exception {}
 
 class IdentityService {
-  final Dio _dio;
-
   IdentityService(this._dio);
+
+  final Dio _dio;
 
   Future<IdentityToken> signInWithAccessCredentials(
       String userName, String password) async {
@@ -28,7 +28,7 @@ class IdentityService {
       } else {
         throw IdentityServiceException();
       }
-    } on DioError catch (error) {
+    } on DioError {
       throw IdentityServiceException();
     }
   }
@@ -46,7 +46,7 @@ class IdentityService {
       } else {
         throw IdentityServiceException();
       }
-    } on DioError catch (error) {
+    } on DioError {
       throw IdentityServiceException();
     }
   }

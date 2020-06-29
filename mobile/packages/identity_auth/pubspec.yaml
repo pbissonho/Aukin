@@ -10,5 +10,6 @@ environment:
 
 dependencies:
   meta: ^1.1.8
+  corsac_jwt: ^0.2.2
   identity_client:
     path: ../identity_client/

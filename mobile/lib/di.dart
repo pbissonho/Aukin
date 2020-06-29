@@ -19,7 +19,7 @@ var service = IdentityService(
     
 var authModule = Module()
   ..single((s) => IdentityClient(
-      fresh: IdentityFresh(SharedTokenStorage()),
+      fresh: IdentityFresh(SecureTokenStorage()),
       httpClient: s.get(),
       identityService: FakeIdentityService()))
   ..single((s) => IdentiyAuth(s.get()))

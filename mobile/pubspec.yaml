@@ -20,8 +20,8 @@ dependencies:
   koin: ^0.10.0
   koin_flutter: ^0.6.3
   rxdart: ^0.24.1
-  shared_preferences: ^0.5.7+3
   meta: any
+  
 dev_dependencies:
   effective_dart: ^1.2.1
   flutter_test:

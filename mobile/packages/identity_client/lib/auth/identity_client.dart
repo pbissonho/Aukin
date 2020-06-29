@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fresh_dio/fresh_dio.dart';
 import 'package:identity_client/identity_client.dart';
 import 'package:meta/meta.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'auth_service.dart';
 import 'models.dart';
 
@@ -25,20 +25,18 @@ class IdentityFresh extends Fresh<IdentityToken> {
         );
 }
 
-class SharedTokenStorage implements TokenStorage<IdentityToken> {
-  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+class SecureTokenStorage implements TokenStorage<IdentityToken> {
+  final _storage = FlutterSecureStorage();
 
   @override
   Future<void> delete() async {
-    final SharedPreferences prefs = await _prefs;
-    prefs.remove('identityToken');
+    _storage.delete(key: 'identityToken');
   }
 
   @override
   Future<IdentityToken> read() async {
     try {
-      final SharedPreferences prefs = await _prefs;
-      var token = await prefs.get('identityToken');
+      var token = await _storage.read(key: 'identityToken');
       return IdentityToken.fromJson(json.decode(token));
     } catch (erro) {
       return null;
@@ -47,8 +45,8 @@ class SharedTokenStorage implements TokenStorage<IdentityToken> {
 
   @override
   Future<void> write(IdentityToken token) async {
-    final SharedPreferences prefs = await _prefs;
-    await prefs.setString('identityToken', json.encode(token.toJson()));
+    await _storage.write(
+        key: 'identityToken', value: json.encode(token.toJson()));
   }
 }
 

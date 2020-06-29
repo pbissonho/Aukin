@@ -4,20 +4,13 @@ description: A Identity client for Dart.
 publish_to: none
 
 dependencies:
-  corsac_jwt: ^0.2.2
-  dartz: ^0.8.6
   dio: ^3.0.9
-  equatable: ^1.2.0
   fresh_dio:
     path: /home/pedro/Documentos/fresh/packages/fresh_dio/
-  hive: ^1.4.1+1
-  json_annotation: ^3.0.1
   meta: ^1.1.8
-  shared_preferences: ^0.5.7+3
+  flutter_secure_storage: ^3.3.3
   
 dev_dependencies:
-  build_runner: ^1.9.0
-  json_serializable: ^3.3.0
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
