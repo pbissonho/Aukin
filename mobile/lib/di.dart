@@ -14,12 +14,14 @@ import 'signup/sign_up_page.dart';
 String url = "https://authtest4.azurewebsites.net";
 
 var coreModule = Module()..single((s) => Dio(BaseOptions(baseUrl: url)));
-
+var service = IdentityService(
+    Dio(BaseOptions(baseUrl: 'https://authtest4.azurewebsites.net')));
+    
 var authModule = Module()
   ..single((s) => IdentityClient(
       fresh: IdentityFresh(SharedTokenStorage()),
       httpClient: s.get(),
-      identityService: IdentityService(Dio(BaseOptions(baseUrl: 'https://authtest4.azurewebsites.net')))))
+      identityService: FakeIdentityService()))
   ..single((s) => IdentiyAuth(s.get()))
   ..bloc((s) => AuthenticationBloc(s.get()));
 

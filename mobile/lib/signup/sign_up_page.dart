@@ -198,7 +198,7 @@ class _SignUpFormState extends State<SignUpForm> {
                       CustomTextField(
                         controller: _nameController,
                         labelTest: "Name",
-                        textInputType: TextInputType.emailAddress,
+                        textInputType: TextInputType.text
                       ),
                       SizedBox(
                         height: textFieldDistance,

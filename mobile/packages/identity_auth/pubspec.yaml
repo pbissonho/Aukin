@@ -12,4 +12,3 @@ dependencies:
   meta: ^1.1.8
   identity_client:
     path: ../identity_client/
-  rxdart: ^0.24.1  

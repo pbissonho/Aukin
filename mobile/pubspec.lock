@@ -180,7 +180,7 @@ packages:
   fresh:
     dependency: transitive
     description:
-      path: "../fresh/packages/fresh"
+      path: "../../fresh/packages/fresh"
       relative: true
     source: path
     version: "0.2.1"
@@ -311,7 +311,7 @@ packages:
     source: hosted
     version: "0.11.2"
   kt_dart:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: kt_dart
       url: "https://pub.dartlang.org"
