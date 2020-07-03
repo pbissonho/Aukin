@@ -44,10 +44,11 @@ class IdentiyAuth {
     });
   }
 
-//  var decodedToken = new JWT.parse(accessToken);
   Stream<IdentiyUser> get currentUser async* {
-    yield* _client.fresh.currentToken.map((token) =>
-        IdentiyUser.fromTokenJson(JWT.parse(token.accessToken).claims));
+    yield* _client.fresh.currentToken.map((token) {
+      if (token == null) return IdentiyUser(email: "", userName: "", roles: []);
+      return IdentiyUser.fromTokenJson(JWT.parse(token.accessToken).claims);
+    });
   }
 
   Future<IdentiyUser> signInWithAccessCredentials({

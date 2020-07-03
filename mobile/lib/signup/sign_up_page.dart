@@ -42,7 +42,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 Scaffold.of(context)
                   ..showSnackBar(
                     SnackBar(
-                      content: Text("Account successfully created."),
+                      content: Text("Your account has been successfully created."),
                       backgroundColor: Colors.green,
                     ),
                   );

@@ -2,13 +2,6 @@ class AccessCredentials {
   AccessCredentials(
       {this.userName, this.password, this.refreshToken, this.grantType});
 
-  AccessCredentials.fromJson(Map<String, dynamic> json) {
-    userName = json['UserName'];
-    password = json['Password'];
-    refreshToken = json['RefreshToken'];
-    grantType = json['GrantType'];
-  }
-
   String userName;
   String password;
   String refreshToken;
@@ -27,13 +20,6 @@ class AccessCredentials {
 class RegisterCredentials {
   RegisterCredentials(
       {this.userName, this.userEmail, this.password, this.confirmPassword});
-
-  RegisterCredentials.fromJson(Map<String, dynamic> json) {
-    userName = json['userName'];
-    userEmail = json['userEmail'];
-    password = json['password'];
-    confirmPassword = json['confirmPassword'];
-  }
 
   String userName;
   String userEmail;

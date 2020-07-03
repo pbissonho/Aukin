@@ -1,7 +1,11 @@
 import 'package:dio/dio.dart';
 import 'models.dart';
 
-class IdentityServiceException implements Exception {}
+class IdentityServiceException implements Exception {
+  final List<String> messages;
+
+  IdentityServiceException(this.messages);
+}
 
 class IdentityService {
   IdentityService(this._dio);
@@ -26,10 +30,11 @@ class IdentityService {
         var token = IdentityToken.fromJson(response.data);
         return token;
       } else {
-        throw IdentityServiceException();
+        throw IdentityServiceException(['', '']);
       }
     } on DioError {
-      throw IdentityServiceException();
+      throw IdentityServiceException(
+          ['An unknown error has occurred;', 'This error will be corrected.']);
     }
   }
 
@@ -44,10 +49,11 @@ class IdentityService {
       if (response.statusCode == 200) {
         return true;
       } else {
-        throw IdentityServiceException();
+        throw IdentityServiceException(['', '']);
       }
     } on DioError {
-      throw IdentityServiceException();
+      throw IdentityServiceException(
+          ['An unknown error has occurred;', 'This error will be corrected.']);
     }
   }
 }
