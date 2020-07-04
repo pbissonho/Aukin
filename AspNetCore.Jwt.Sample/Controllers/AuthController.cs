@@ -11,11 +11,14 @@ using AspNetCore.Jwt.Sample.Security.models;
 using System.Collections.Generic;
 using AspNetCore.Jwt.Sample.Model;
 using System.Security.Claims;
+using AspNetCore.Jwt.Sample.Controllers.Error;
+using Newtonsoft.Json;
 
 namespace AspNetCore.Jwt.Sample.Controllers
 {
+    [ApiController]
     [Route("api/account")]
-    public class AuthController : CustomController
+    public class AuthController : ControllerBase
     {
         private readonly SignInManager<MyIdentityUser> _signInManager;
         private readonly UserManager<MyIdentityUser> _userManager;
@@ -33,8 +36,6 @@ namespace AspNetCore.Jwt.Sample.Controllers
         [HttpPost("register")]
         public async Task<ActionResult> Register(CustomRegisterUser registerUser)
         {
-            if (!ModelState.IsValid) return CustomResponse(ModelState);
-
             var user = new MyIdentityUser
             {
                 UserName = registerUser.Name,
@@ -48,38 +49,40 @@ namespace AspNetCore.Jwt.Sample.Controllers
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, Roles.ROLE_BASIC);
-                return CustomResponse(createToken(user.UserName));
+                return Ok(createToken(user.UserName));
             }
-
-            foreach (var error in result.Errors)
+            else
             {
-                AddError(error.Description);
+                var error = new BadRequestError();
+                foreach (var item in result.Errors)
+                {
+                    error.AddMessage(item.Description);
+                }
+                var json = ErrorFormat.SerializeError(ModelState, error);
+                return BadRequest(json);
             }
-
-            return CustomResponse();
         }
 
         [HttpPost("login")]
         public async Task<ActionResult> Login(CustomLoginUser loginUser)
         {
-            if (!ModelState.IsValid) return CustomResponse(ModelState);
 
             var result = await _signInManager.PasswordSignInAsync(loginUser.Name, loginUser.Password, false, true);
 
             if (result.Succeeded)
             {
                 var tokeResponse = createToken(loginUser.Name);
-                return CustomResponse(tokeResponse);
+                return Ok(tokeResponse);
             }
 
             if (result.IsLockedOut)
             {
-                AddError("This user is blocked");
-                return CustomResponse();
+                string jsonError = ErrorFormat.SerializeError(new BadRequestError("Incorrect user or password"));
+                return BadRequest(jsonError);
             }
 
-            AddError("Incorrect user or password");
-            return CustomResponse();
+            string json = ErrorFormat.SerializeError(new BadRequestError("Incorrect user or password"));
+            return BadRequest(json);
         }
 
         private CustomUserResponse createToken(string name)

@@ -5,11 +5,11 @@ import 'package:meta/meta.dart';
 import 'package:identity_client/identity_client.dart';
 import 'package:corsac_jwt/corsac_jwt.dart';
 
-class Claim {
+class IdentiyClaim {
   final String value;
   final String type;
 
-  Claim(this.value, this.type);
+  IdentiyClaim(this.value, this.type);
 }
 
 class IdentiyUser {
@@ -17,20 +17,21 @@ class IdentiyUser {
 
   factory IdentiyUser.fromToken(IdentityToken token) {
     var claims = JWT.parse(token.accessToken).claims;
-    var roles = (claims['role'] as List).map((f) => f.toString()).toList();
+    var role = (claims['role']);
     var user = IdentiyUser(
         userName: token.userToken.name,
-        roles: roles,
+        roles: [role],
         email: token.userToken.email,
-        accessClaims:
-            token.userToken.claims.map((c) => Claim(c.value, c.type)));
+        accessClaims: token.userToken.claims
+            .map<IdentiyClaim>((c) => IdentiyClaim(c.value, c.type))
+            .toList());
     return user;
   }
 
   final String userName;
   final String email;
   final List<String> roles;
-  final List<Claim> accessClaims;
+  final List<IdentiyClaim> accessClaims;
 }
 
 enum UserAuthenticationStatus {

@@ -3,6 +3,7 @@ import 'package:koin_flutter/koin_bloc.dart';
 import 'package:identity_auth/identity_auth.dart';
 import 'login_event.dart';
 import 'login_state.dart';
+import 'package:identity_client/identity_client.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> with Disposable {
   final IdentiyAuth identiyAuth;
@@ -20,8 +21,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with Disposable {
         password: event.password,
       );
       yield LoginSuccess();
+    } on ServerException catch (data) {
+      yield LoginFailure(data.error.messages);
     } on Exception catch (_) {
-      yield LoginFailure("Login failed.");
+      yield LoginFailure(["Login failed."]);
     }
   }
 

@@ -1,12 +1,17 @@
+using System.Linq;
+using System.Text.Json;
 using AspNetCore.Jwt.Sample.Config;
+using AspNetCore.Jwt.Sample.Controllers.Error;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NetDevPack.Identity;
 using NetDevPack.Identity.User;
+using Newtonsoft.Json;
 
 namespace AspNetCore.Jwt.Sample
 {
@@ -25,6 +30,27 @@ namespace AspNetCore.Jwt.Sample
 
             // When you have specifics configurations (see inside this method)
             services.AddCustomIdentityConfiguration(Configuration);
+
+
+            services.Configure<ApiBehaviorOptions>(options =>
+           {
+               options.InvalidModelStateResponseFactory = context =>
+               {
+                   var errors = context.ModelState.Values.SelectMany(e => e.Errors);
+                   var apiError = new BadRequestError();
+
+                   foreach (var error in errors)
+                   {
+                       apiError.AddMessage(error.ErrorMessage);
+                   }
+
+                   string json = JsonConvert.SerializeObject(apiError, Formatting.Indented);
+                   var result = new BadRequestObjectResult(json);
+                   result.ContentTypes.Clear();
+                   return result;
+               };
+           });
+
 
             services.AddAspNetUserConfiguration();
 

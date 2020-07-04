@@ -42,7 +42,17 @@ class _LoginState extends State<Login> {
               Scaffold.of(context)
                 ..hideCurrentSnackBar()
                 ..showSnackBar(
-                    SnackBar(content: Text(state.message.toString())));
+                  SnackBar(
+                    content: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: state.messages.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Text(state.messages[index]);
+                      },
+                    ),
+                    backgroundColor: Colors.red,
+                  ),
+                );
             }
           },
           child: LoginForm(loginBloc: loginBloc)),
@@ -59,13 +69,13 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  TextEditingController _emailController;
+  TextEditingController _nameController;
   TextEditingController _passwordController;
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
-    _emailController = TextEditingController();
+    _nameController = TextEditingController();
     _passwordController = TextEditingController();
     super.initState();
   }
@@ -97,7 +107,7 @@ class _LoginFormState extends State<LoginForm> {
                         height: 15,
                       ),
                       CustomTextField(
-                        controller: _emailController,
+                        controller: _nameController,
                         labelTest: "Username",
                         textInputType: TextInputType.text,
                       ),
@@ -116,8 +126,7 @@ class _LoginFormState extends State<LoginForm> {
                           if (_formKey.currentState.validate()) {
                             FocusScope.of(context).requestFocus(FocusNode());
                             widget.loginBloc.add(LoginWithCredentials(
-                                _emailController.value.text,
-                                'AdminAPIProdutos01!'));
+                                _nameController.value.text, 'Aa12345678!'));
                           }
                         },
                       ),

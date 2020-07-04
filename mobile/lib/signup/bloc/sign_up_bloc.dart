@@ -23,10 +23,11 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> with Disposable {
       yield SuccessRegistered();
       await Future.delayed(Duration(milliseconds: 700));
       yield SignUpCreatedAccount();
+    } on ServerException catch (error) {
+      yield SignUpFailed(error.error.messages);
     } catch (erro) {
       yield SignUpFailed([
-        "Já existe um usuário cadastro com o nome. Digite outro por favor.",
-        "Test"
+        "An unknown error has occurred.",
       ]);
     }
   }

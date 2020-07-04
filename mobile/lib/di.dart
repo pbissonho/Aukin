@@ -16,12 +16,12 @@ String url = "https://authtest4.azurewebsites.net";
 var coreModule = Module()..single((s) => Dio(BaseOptions(baseUrl: url)));
 var service = IdentityService(
     Dio(BaseOptions(baseUrl: 'https://authtest4.azurewebsites.net')));
-    
+
 var authModule = Module()
   ..single((s) => IdentityClient(
       fresh: IdentityFresh(SecureTokenStorage()),
       httpClient: s.get(),
-      identityService: FakeIdentityService()))
+      identityService: IdentityService(Dio(BaseOptions(baseUrl: url)))))
   ..single((s) => IdentiyAuth(s.get()))
   ..bloc((s) => AuthenticationBloc(s.get()));
 

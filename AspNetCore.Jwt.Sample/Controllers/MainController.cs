@@ -1,63 +1,32 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using AspNetCore.Jwt.Sample.Controllers.Error;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Newtonsoft.Json;
 
 namespace AspNetCore.Jwt.Sample.Controllers
 {
-    [ApiController]
-    public abstract class CustomController : ControllerBase
+    public static class ErrorFormat
     {
-        public ICollection<string> Errors = new List<string>();
-
-        protected ActionResult CustomResponse(object result = null)
-        {
-            if (IsOperationValid())
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(new ValidationProblemDetails(new Dictionary<string, string[]>
-            {
-                { "Messages", Errors.ToArray() }
-            }));
-        }
-
-        protected ActionResult CustomResponse(ModelStateDictionary modelState)
+        public static string SerializeError(ModelStateDictionary modelState, ApiError apiError)
         {
             var errors = modelState.Values.SelectMany(e => e.Errors);
+
             foreach (var error in errors)
             {
-                AddError(error.ErrorMessage);
+                apiError.AddMessage(error.ErrorMessage);
             }
 
-            return CustomResponse();
+            string json = JsonConvert.SerializeObject(apiError, Formatting.Indented);
+            return json;
         }
 
-        protected ActionResult CustomResponse(ValidationResult validationResult)
+        public static string SerializeError(ApiError apiError)
         {
-            foreach (var error in validationResult.Errors)
-            {
-                AddError(error.ErrorMessage);
-            }
-
-            return CustomResponse();
-        }
-
-        protected bool IsOperationValid()
-        {
-            return !Errors.Any();
-        }
-
-        protected void AddError(string erro)
-        {
-            Errors.Add(erro);
-        }
-
-        protected void ClearErrors()
-        {
-            Errors.Clear();
+            string json = JsonConvert.SerializeObject(apiError, Formatting.Indented);
+            return json;
         }
     }
 }

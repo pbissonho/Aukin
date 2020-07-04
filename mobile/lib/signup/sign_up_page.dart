@@ -42,7 +42,8 @@ class _SignUpPageState extends State<SignUpPage> {
                 Scaffold.of(context)
                   ..showSnackBar(
                     SnackBar(
-                      content: Text("Your account has been successfully created."),
+                      content:
+                          Text("Your account has been successfully created."),
                       backgroundColor: Colors.green,
                     ),
                   );
@@ -196,10 +197,9 @@ class _SignUpFormState extends State<SignUpForm> {
                         height: 15,
                       ),
                       CustomTextField(
-                        controller: _nameController,
-                        labelTest: "Name",
-                        textInputType: TextInputType.text
-                      ),
+                          controller: _nameController,
+                          labelTest: "Name",
+                          textInputType: TextInputType.text),
                       SizedBox(
                         height: textFieldDistance,
                       ),
@@ -235,10 +235,10 @@ class _SignUpFormState extends State<SignUpForm> {
                           if (_formKey.currentState.validate()) {
                             widget.signUpBloc.add(
                                 CreateUserWithRegisterCredentials(
-                                    confirmPassword: 'AdminAPIProdutos01!',
+                                    confirmPassword: 'Aa12345678!',
                                     email: _emailController.value.text,
                                     name: _nameController.value.text,
-                                    password: 'AdminAPIProdutos01!'));
+                                    password: 'Aa12345678!'));
                           }
                         },
                       ),

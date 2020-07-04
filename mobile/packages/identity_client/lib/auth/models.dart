@@ -123,3 +123,25 @@ class Claims {
     return data;
   }
 }
+
+class ErrorModel {
+  List<String> messages;
+  int statusCode;
+  String statusDescription;
+
+  ErrorModel({this.messages, this.statusCode, this.statusDescription});
+
+  ErrorModel.fromJson(Map<String, dynamic> json) {
+    messages = json['Messages'].cast<String>();
+    statusCode = json['StatusCode'];
+    statusDescription = json['StatusDescription'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['Messages'] = this.messages;
+    data['StatusCode'] = this.statusCode;
+    data['StatusDescription'] = this.statusDescription;
+    return data;
+  }
+}

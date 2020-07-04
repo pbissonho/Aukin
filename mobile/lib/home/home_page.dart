@@ -16,6 +16,10 @@ class CustomDrawer extends StatelessWidget {
       child: BlocBuilder<HomeBloc, IdentiyUser>(
         bloc: homeBloc,
         builder: (context, state) {
+          var name = state.userName;
+
+          if (name.length >= 1) name = name.substring(0, 1);
+
           return ListView(
             children: <Widget>[
               UserAccountsDrawerHeader(
@@ -23,7 +27,7 @@ class CustomDrawer extends StatelessWidget {
                 accountEmail: Text(state.email),
                 currentAccountPicture: CircleAvatar(
                   backgroundColor: Colors.white,
-                  child: Text(state.userName),
+                  child: Text(name),
                 ),
               )
             ],
