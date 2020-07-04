@@ -64,6 +64,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 Scaffold.of(context)
                   ..showSnackBar(
                     SnackBar(
+                      duration: Duration(milliseconds: 4000),
                       content: ListView.builder(
                         shrinkWrap: true,
                         itemCount: state.messages.length,

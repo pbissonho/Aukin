@@ -8,7 +8,7 @@ namespace AspNetCore.Jwt.Sample.Controllers
 {   
     [ApiController]
     [Authorize]
-    [Authorize(Roles = Roles.ROLE_BASIC)]
+    [Authorize(Roles = Roles.BASIC)]
     [Route("api/sample")]
     public class SampleController : ControllerBase
     {
@@ -20,16 +20,17 @@ namespace AspNetCore.Jwt.Sample.Controllers
         }
 
         [HttpGet("read")]
+        [CustomAuthorize(Claims.Sample, ClaimsValues.READ)]
         public IActionResult SampleActionRead()
         {
             return Ok($"The user {_user.Name} have permission to get this!");
         }
 
-        [HttpGet("list")]
-        [CustomAuthorize("Sample", "List")]
-        public IActionResult SampleActionList()
+        [HttpPost("write")]
+        [CustomAuthorize(Claims.Sample, ClaimsValues.WRITE)]
+        public IActionResult SampleActionWrite()
         {
-            return Ok($"The user {_user.GetUserEmail()} have permission to get this!");
+            return Ok($"The user {_user.GetUserEmail()} have permission to do this.!");
         }
     }
 }

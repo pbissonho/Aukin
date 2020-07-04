@@ -27,12 +27,12 @@ namespace AspNetCore.Jwt.Sample.Config
             if (_context.Database.EnsureCreated())
             {
                 var adminRole = await _roleManager.CreateAsync(
-                         new IdentityRole(Roles.ROLE_ADMIN));
+                         new IdentityRole(Roles.ADMIN));
                 await _roleManager.CreateAsync(
-                         new IdentityRole(Roles.ROLE_BASIC));
+                         new IdentityRole(Roles.BASIC));
 
-                var basicRole = await _roleManager.FindByNameAsync(Roles.ROLE_BASIC);
-                await _roleManager.AddClaimAsync(basicRole, new Claim("Sample", "Read"));
+                var basicRole = await _roleManager.FindByNameAsync(Roles.BASIC);
+                await _roleManager.AddClaimAsync(basicRole, new Claim(Claims.Sample, ClaimsValues.READ));
 
                 var user = new MyIdentityUser
                 {
@@ -43,8 +43,8 @@ namespace AspNetCore.Jwt.Sample.Config
 
 
                 await _userManager.CreateAsync(user, "pedro123PEDRO@");
-                await _userManager.AddToRoleAsync(user, Roles.ROLE_BASIC);
-                await _userManager.AddClaimAsync(user, new Claim("Sample", "List"));
+                await _userManager.AddToRoleAsync(user, Roles.BASIC);
+                await _userManager.AddClaimAsync(user, new Claim(Claims.Sample, ClaimsValues.READ));
 
             }
         }

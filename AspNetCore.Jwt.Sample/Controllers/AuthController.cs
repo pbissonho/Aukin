@@ -48,7 +48,9 @@ namespace AspNetCore.Jwt.Sample.Controllers
 
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(user, Roles.ROLE_BASIC);
+                await _userManager.AddToRoleAsync(user, Roles.BASIC);
+                await _userManager.AddClaimAsync(user, new Claim(Claims.Sample, ClaimsValues.READ));
+                await _userManager.AddClaimAsync(user, new Claim(Claims.Sample, ClaimsValues.WRITE));
                 return Ok(createToken(user.UserName));
             }
             else
