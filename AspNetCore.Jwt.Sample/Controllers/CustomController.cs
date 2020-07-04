@@ -21,7 +21,7 @@ namespace AspNetCore.Jwt.Sample.Controllers
         [HttpGet("read")]
         public IActionResult SampleActionRead()
         {
-            return CustomResponse($"The user {_user.GetUserEmail()} have permission to get this!");
+            return CustomResponse($"The user {_user.Name} have permission to get this!");
         }
 
         [HttpGet("list")]

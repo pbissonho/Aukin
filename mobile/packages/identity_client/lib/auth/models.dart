@@ -1,35 +1,42 @@
 class AccessCredentials {
-  AccessCredentials(
-      {this.userName, this.password, this.refreshToken, this.grantType});
+  AccessCredentials({this.name, this.password});
 
-  String userName;
+  AccessCredentials.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    password = json['password'];
+  }
+
+  String name;
   String password;
-  String refreshToken;
-  String grantType;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['UserName'] = this.userName;
-    data['Password'] = this.password;
-    data['RefreshToken'] = this.refreshToken;
-    data['GrantType'] = this.grantType;
+    data['name'] = this.name;
+    data['password'] = this.password;
     return data;
   }
 }
 
 class RegisterCredentials {
   RegisterCredentials(
-      {this.userName, this.userEmail, this.password, this.confirmPassword});
+      {this.email, this.name, this.password, this.confirmPassword});
 
-  String userName;
-  String userEmail;
+  RegisterCredentials.fromJson(Map<String, dynamic> json) {
+    email = json['email'];
+    name = json['name'];
+    password = json['password'];
+    confirmPassword = json['confirmPassword'];
+  }
+
+  String email;
+  String name;
   String password;
   String confirmPassword;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['userName'] = this.userName;
-    data['userEmail'] = this.userEmail;
+    data['email'] = this.email;
+    data['name'] = this.name;
     data['password'] = this.password;
     data['confirmPassword'] = this.confirmPassword;
     return data;
@@ -37,38 +44,82 @@ class RegisterCredentials {
 }
 
 class IdentityToken {
+  String accessToken;
+  int expiresIn;
+  String tokenType;
+  UserToken userToken;
+
   IdentityToken(
-      {this.authenticated = false,
-      this.created = '',
-      this.expiration = '',
-      this.accessToken = '',
-      this.refreshToken = '',
-      this.message = ''});
+      {this.accessToken, this.expiresIn, this.tokenType, this.userToken});
 
   IdentityToken.fromJson(Map<String, dynamic> json) {
-    authenticated = json['authenticated'];
-    created = json['created'];
-    expiration = json['expiration'];
     accessToken = json['accessToken'];
-    refreshToken = json['refreshToken'];
-    message = json['message'];
+    expiresIn = json['expiresIn'];
+    tokenType = json['tokenType'];
+    userToken = json['userToken'] != null
+        ? new UserToken.fromJson(json['userToken'])
+        : null;
   }
-
-  bool authenticated;
-  String created;
-  String expiration;
-  String accessToken;
-  String refreshToken;
-  String message;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['authenticated'] = this.authenticated;
-    data['created'] = this.created;
-    data['expiration'] = this.expiration;
     data['accessToken'] = this.accessToken;
-    data['refreshToken'] = this.refreshToken;
-    data['message'] = this.message;
+    data['expiresIn'] = this.expiresIn;
+    data['tokenType'] = this.tokenType;
+    if (this.userToken != null) {
+      data['userToken'] = this.userToken.toJson();
+    }
+    return data;
+  }
+}
+
+class UserToken {
+  String id;
+  String email;
+  String name;
+  List<Claims> claims;
+
+  UserToken({this.id, this.email, this.name, this.claims});
+
+  UserToken.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    email = json['email'];
+    name = json['name'];
+    if (json['claims'] != null) {
+      claims = new List<Claims>();
+      json['claims'].forEach((v) {
+        claims.add(new Claims.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['email'] = this.email;
+    data['name'] = this.name;
+    if (this.claims != null) {
+      data['claims'] = this.claims.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Claims {
+  String value;
+  String type;
+
+  Claims({this.value, this.type});
+
+  Claims.fromJson(Map<String, dynamic> json) {
+    value = json['value'];
+    type = json['type'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['value'] = this.value;
+    data['type'] = this.type;
     return data;
   }
 }

@@ -1,22 +1,36 @@
 import 'dart:async';
 
+import 'package:identity_client/auth/models.dart';
 import 'package:meta/meta.dart';
 import 'package:identity_client/identity_client.dart';
 import 'package:corsac_jwt/corsac_jwt.dart';
 
-class IdentiyUser {
-  IdentiyUser({this.userName, this.email, this.roles});
+class Claim {
+  final String value;
+  final String type;
 
-  factory IdentiyUser.fromTokenJson(Map<String, dynamic> claims) {
+  Claim(this.value, this.type);
+}
+
+class IdentiyUser {
+  IdentiyUser({this.accessClaims, this.userName, this.email, this.roles});
+
+  factory IdentiyUser.fromToken(IdentityToken token) {
+    var claims = JWT.parse(token.accessToken).claims;
     var roles = (claims['role'] as List).map((f) => f.toString()).toList();
-    var name = claims['unique_name'][0];
-    var user = IdentiyUser(userName: name, roles: roles, email: '');
+    var user = IdentiyUser(
+        userName: token.userToken.name,
+        roles: roles,
+        email: token.userToken.email,
+        accessClaims:
+            token.userToken.claims.map((c) => Claim(c.value, c.type)));
     return user;
   }
 
   final String userName;
   final String email;
   final List<String> roles;
+  final List<Claim> accessClaims;
 }
 
 enum UserAuthenticationStatus {
@@ -46,8 +60,10 @@ class IdentiyAuth {
 
   Stream<IdentiyUser> get currentUser async* {
     yield* _client.fresh.currentToken.map((token) {
-      if (token == null) return IdentiyUser(email: "", userName: "", roles: []);
-      return IdentiyUser.fromTokenJson(JWT.parse(token.accessToken).claims);
+      if (token == null)
+        return IdentiyUser(
+            email: "", userName: "", roles: [], accessClaims: []);
+      return IdentiyUser.fromToken(token);
     });
   }
 
@@ -59,7 +75,7 @@ class IdentiyAuth {
       username: username,
       password: password,
     );
-    IdentiyUser.fromTokenJson(JWT.parse(token.accessToken).claims);
+    return IdentiyUser.fromToken(token);
   }
 
   Future<void> createUserWithRegisterCredentials({

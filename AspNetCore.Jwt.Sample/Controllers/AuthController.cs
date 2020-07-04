@@ -6,6 +6,11 @@ using Microsoft.Extensions.Options;
 using NetDevPack.Identity.Jwt;
 using NetDevPack.Identity.Jwt.Model;
 using NetDevPack.Identity.Model;
+using AspNetCore.Jwt.Sample.Security;
+using AspNetCore.Jwt.Sample.Security.models;
+using System.Collections.Generic;
+using AspNetCore.Jwt.Sample.Model;
+using System.Security.Claims;
 
 namespace AspNetCore.Jwt.Sample.Controllers
 {
@@ -26,22 +31,24 @@ namespace AspNetCore.Jwt.Sample.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult> Register(RegisterUser registerUser)
+        public async Task<ActionResult> Register(CustomRegisterUser registerUser)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
             var user = new MyIdentityUser
             {
-                UserName = registerUser.Email,
+                UserName = registerUser.Name,
                 Email = registerUser.Email,
                 EmailConfirmed = true
             };
 
             var result = await _userManager.CreateAsync(user, registerUser.Password);
 
+
             if (result.Succeeded)
             {
-                return CustomResponse(createToken(user.Email));
+                await _userManager.AddToRoleAsync(user, Roles.ROLE_BASIC);
+                return CustomResponse(createToken(user.UserName));
             }
 
             foreach (var error in result.Errors)
@@ -53,15 +60,15 @@ namespace AspNetCore.Jwt.Sample.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult> Login(LoginUser loginUser)
+        public async Task<ActionResult> Login(CustomLoginUser loginUser)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var result = await _signInManager.PasswordSignInAsync(loginUser.Email, loginUser.Password, false, true);
+            var result = await _signInManager.PasswordSignInAsync(loginUser.Name, loginUser.Password, false, true);
 
             if (result.Succeeded)
             {
-                var tokeResponse = createToken(loginUser.Email);
+                var tokeResponse = createToken(loginUser.Name);
                 return CustomResponse(tokeResponse);
             }
 
@@ -75,16 +82,34 @@ namespace AspNetCore.Jwt.Sample.Controllers
             return CustomResponse();
         }
 
-        private UserResponse createToken(string email)
+        private CustomUserResponse createToken(string name)
         {
-            return new JwtBuilder<MyIdentityUser>()
+            return new CustomJwtBuilder<MyIdentityUser>()
                 .WithUserManager(_userManager)
                 .WithJwtSettings(_appJwtSettings)
-                .WithEmail(email)
+                .WithName(name)
                 .WithUserClaims()
                 .WithJwtClaims()
                 .WithUserRoles()
-                .BuildUserResponse();
+                .BuildCustomUserResponse<CustomUserResponse>(createCustomResponse);
+        }
+
+        private CustomUserResponse createCustomResponse(MyIdentityUser user, IEnumerable<UserClaim> claims, CustomToken token)
+        {
+            var response = new CustomUserResponse
+            {
+                AccessToken = token.AccessToken,
+                TokenType = token.tokenType,
+                ExpiresIn = token.ExpiresIn,
+                UserToken = new CustomUserToken
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    Name = user.UserName,
+                    Claims = claims
+                }
+            };
+            return response;
         }
     }
 }

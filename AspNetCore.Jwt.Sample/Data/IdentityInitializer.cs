@@ -36,7 +36,7 @@ namespace AspNetCore.Jwt.Sample.Config
 
                 var user = new MyIdentityUser
                 {
-                    UserName = "pedro.bissonho@gmail.com",
+                    UserName = "pbissonho",
                     Email = "pedro.bissonho@gmail.com",
                     EmailConfirmed = true,
                 };

@@ -15,7 +15,6 @@ class IdentityFresh extends Fresh<IdentityToken> {
           refreshToken: (token, client) async {
             return IdentityToken(
               accessToken: 'access_token_',
-              refreshToken: 'refresh_token_',
             );
           },
           shouldRefresh: (_) => false,
@@ -81,9 +80,9 @@ class IdentityClient {
     @required String userEmail,
   }) async {
     await identityService.createUserWithRegisterCredentials(RegisterCredentials(
-        userEmail: userEmail,
+        email: userEmail,
         password: password,
-        userName: username,
+        name: username,
         confirmPassword: password));
   }
 
