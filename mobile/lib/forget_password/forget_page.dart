@@ -1,4 +1,3 @@
-import 'package:authentication/forget_password/forget/code_page.dart';
 import 'package:authentication/shared/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +5,7 @@ import 'package:authentication/shared/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:koin/instace_scope.dart';
 import 'bloc/forget_bloc.dart';
+import 'code_page.dart';
 
 class ForgetPage extends StatefulWidget {
   @override

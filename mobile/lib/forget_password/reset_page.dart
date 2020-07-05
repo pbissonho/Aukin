@@ -159,8 +159,8 @@ class _SignUpFormState extends State<ResetForm> {
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             widget.forgetBloc.add(ResetAccountEvent(
-                                confirmpassword: 'Aa12345678!',
-                                password: 'Aa12345678!'));
+                                confirmpassword: _passwordController.value.text,
+                                password: _passwordController.value.text));
                           }
                         },
                       ),

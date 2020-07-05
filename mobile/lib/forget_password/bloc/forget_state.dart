@@ -30,7 +30,7 @@ class ForgetState with EquatableMixin {
     return ForgetState(
       status: status ?? this.status,
       email: email ?? this.email,
-      token: email ?? this.token,
+      token: token ?? this.token,
     );
   }
 

@@ -188,7 +188,7 @@ class ResetPasswordModel {
     data['password'] = this.password;
     data['confirmPassword'] = this.confirmPassword;
     data['email'] = this.email;
-    data['code'] = this.token;
+    data['token'] = this.token;
     return data;
   }
 }

@@ -4,8 +4,8 @@ import 'package:identity_client/identity_client.dart';
 import 'package:koin/koin.dart';
 import 'package:koin_flutter/koin_bloc.dart';
 import 'package:identity_auth/identity_auth.dart';
-import 'forget_password/forget/bloc/forget_bloc.dart';
-import 'forget_password/forget/forget_page.dart';
+import 'forget_password/bloc/forget_bloc.dart';
+import 'forget_password/forget_page.dart';
 import 'home/bloc/user_bloc.dart';
 import 'home/home_page.dart';
 import 'home/repository_sample.dart';
@@ -16,9 +16,6 @@ import 'signup/sign_up_page.dart';
 
 String url = "https://authtest4.azurewebsites.net";
 var coreModule = Module()..single((s) => Dio(BaseOptions(baseUrl: url)));
-var service = IdentityService(
-    Dio(BaseOptions(baseUrl: 'https://authtest4.azurewebsites.net')));
-
 
 var dev = authModuleFake + authScopesModuleFake;
 var prod = authModule + authScopesModule;
@@ -30,7 +27,6 @@ var authModule = Module()
       identityService: IdentityService(Dio(BaseOptions(baseUrl: url)))))
   ..single((s) => IdentiyAuth(s.get()))
   ..bloc((s) => AuthenticationBloc(s.get()));
-
 
 var authScopesModule = module()
   ..scope<Login>((s) {
@@ -48,8 +44,6 @@ var authScopesModule = module()
     s.scopedBloc((s) => ForgetBloc(s.get()));
   });
 
-
-
 var authModuleFake = Module()
   ..single((s) => IdentityClient(
       fresh: IdentityFresh(SecureTokenStorage()),
@@ -57,7 +51,6 @@ var authModuleFake = Module()
       identityService: FakeIdentityService()))
   ..single((s) => IdentiyAuth(s.get()))
   ..bloc((s) => AuthenticationBloc(s.get()));
-
 
 var authScopesModuleFake = module()
   ..scope<Login>((s) {

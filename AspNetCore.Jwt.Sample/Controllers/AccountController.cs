@@ -76,7 +76,19 @@ namespace AspNetCore.Jwt.Sample.Controllers
                 return BadRequest(ErrorFormat.SerializeError(new BadRequestError("Invalid reset credentiais")));
             }
 
-            await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
+            var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
+
+            if (!result.Succeeded)
+            {
+                var error = new BadRequestError();
+                foreach (var item in result.Errors)
+                {
+                    error.AddMessage(item.Description);
+                }
+                var json = ErrorFormat.SerializeError(ModelState, error);
+                return BadRequest(json);
+            }
+
             return Ok("Ok");
         }
 

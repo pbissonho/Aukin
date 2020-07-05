@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:authentication/forget_password/forget/reset_page.dart';
 import 'package:authentication/shared/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +7,7 @@ import 'package:authentication/shared/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'bloc/forget_bloc.dart';
+import 'reset_page.dart';
 
 class CodePage extends StatefulWidget {
   final ForgetBloc forgetBloc;

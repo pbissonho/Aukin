@@ -1,4 +1,4 @@
-import 'package:authentication/forget_password/forget/forget_page.dart';
+import 'package:authentication/forget_password/forget_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +11,6 @@ import 'bloc/login_event.dart';
 import 'bloc/login_state.dart';
 
 var color = Color(0xff5d6abe);
-
 
 class Login extends StatefulWidget {
   static Route route() {
@@ -131,7 +130,8 @@ class _LoginFormState extends State<LoginForm> {
                           if (_formKey.currentState.validate()) {
                             FocusScope.of(context).requestFocus(FocusNode());
                             widget.loginBloc.add(LoginWithCredentials(
-                                _nameController.value.text, 'Aa12345678!'));
+                                _nameController.value.text,
+                                _passwordController.value.text));
                           }
                         },
                       ),
