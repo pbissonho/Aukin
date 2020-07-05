@@ -13,25 +13,95 @@ using AspNetCore.Jwt.Sample.Model;
 using System.Security.Claims;
 using AspNetCore.Jwt.Sample.Controllers.Error;
 using Newtonsoft.Json;
+using AspNetCore.Jwt.Sample.EmailService;
+using AspNetCore.Jwt.Sample.EmailService.models;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace AspNetCore.Jwt.Sample.Controllers
 {
     [ApiController]
     [Route("api/account")]
-    public class AuthController : ControllerBase
+    public class AccountController : ControllerBase
     {
         private readonly SignInManager<MyIdentityUser> _signInManager;
         private readonly UserManager<MyIdentityUser> _userManager;
         private readonly AppJwtSettings _appJwtSettings;
 
-        public AuthController(SignInManager<MyIdentityUser> signInManager,
+        private readonly IEmailSender _emailService;
+
+        public AccountController(SignInManager<MyIdentityUser> signInManager,
             UserManager<MyIdentityUser> userManager,
+            IEmailSender emailService,
             IOptions<AppJwtSettings> appJwtSettings)
         {
+            _emailService = emailService;
             _signInManager = signInManager;
             _userManager = userManager;
             _appJwtSettings = appJwtSettings.Value;
         }
+
+
+        [HttpPost("send")]
+        public async Task<ActionResult> ForgotPassword(ForgotPasswordModel model, [FromServices] IMemoryCache cache)
+        {
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+
+            if (user == null)
+            {
+                string jsonError = ErrorFormat.SerializeError(new BadRequestError("The email address does not exist."));
+                return BadRequest(jsonError);
+            }
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var code = RandomGenerator.GenerateString(8);
+            cache.Set(code, token);
+            cache.Set(model.Email, "" + 1);
+
+            await _emailService.SendEmailAsync(model.Email, "Reset password account.", "Code:" + code);
+
+            return Ok();
+
+        }
+
+
+        [HttpPost("reset")]
+        public async Task<ActionResult> ResetPassword(ResetPasswordModel model, [FromServices] IMemoryCache cache)
+        {
+            string jsonError = ErrorFormat.SerializeError(new BadRequestError("Invalid reset credentiais"));
+            var user = await _userManager.FindByEmailAsync(model.Email);
+
+            if (user == null)
+            {
+                return BadRequest(jsonError);
+            }
+
+            var delayString = cache.Get(model.Email) as string;
+
+            if (delayString != null)
+            {
+                var delay = int.Parse(delayString);
+
+                await Task.Delay(delay * 1000);
+            }
+
+
+            var token = cache.Get(model.Code) as string;
+
+            if (token == null)
+            {
+                cache.Set(model.Email, "" + int.Parse(delayString) * 2);
+                return BadRequest(jsonError);
+            }
+
+            await _userManager.ResetPasswordAsync(user, token, model.Password);
+
+            return Ok("Reset finished successfully.");
+        }
+
+
 
         [HttpPost("register")]
         public async Task<ActionResult> Register(CustomRegisterUser registerUser)

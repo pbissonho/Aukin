@@ -4,9 +4,9 @@ import 'package:koin_flutter/koin_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:identity_auth/identity_auth.dart';
 
-part 'home_event.dart';
+part 'user_event.dart';
 
-class HomeBloc extends Bloc<HomeEvent, IdentiyUser> implements Disposable {
+class UserBloc extends Bloc<UserEvent, IdentiyUser> implements Disposable {
   final IdentiyAuth identiyAuth;
 
   @override
@@ -14,7 +14,7 @@ class HomeBloc extends Bloc<HomeEvent, IdentiyUser> implements Disposable {
       IdentiyUser(userName: '', email: '', roles: []);
   StreamSubscription<IdentiyUser> _subscription;
 
-  HomeBloc(this.identiyAuth) {
+  UserBloc(this.identiyAuth) {
     _subscription = identiyAuth.currentUser.listen((onData) {
       add(UserChanged(onData));
     });
@@ -22,7 +22,7 @@ class HomeBloc extends Bloc<HomeEvent, IdentiyUser> implements Disposable {
 
   @override
   Stream<IdentiyUser> mapEventToState(
-    HomeEvent event,
+    UserEvent event,
   ) async* {
     if (event is UserChanged) {
       yield event.identiyUser;

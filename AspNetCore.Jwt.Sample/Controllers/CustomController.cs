@@ -22,8 +22,8 @@ namespace AspNetCore.Jwt.Sample.Controllers
         [HttpGet("read")]
         [CustomAuthorize(Claims.Sample, ClaimsValues.READ)]
         public IActionResult SampleActionRead()
-        {
-            return Ok($"The user {_user.Name} have permission to get this!");
+        {   var name = _user.Name;
+            return Ok($"The user {name} have permission to get this!");
         }
 
         [HttpPost("write")]

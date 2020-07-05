@@ -4,8 +4,9 @@ import 'package:identity_client/identity_client.dart';
 import 'package:koin/koin.dart';
 import 'package:koin_flutter/koin_bloc.dart';
 import 'package:identity_auth/identity_auth.dart';
-import 'home/bloc/home_bloc.dart';
+import 'home/bloc/user_bloc.dart';
 import 'home/home_page.dart';
+import 'home/repository_sample.dart';
 import 'login/bloc/login_bloc.dart';
 import 'login/login_page.dart';
 import 'signup/bloc/sign_up_bloc.dart';
@@ -29,8 +30,10 @@ var authScopesModule = module()
   ..scope<Login>((s) {
     s.scopedBloc((s) => LoginBloc(s.get()));
   })
-  ..scope<HomePage>((s) {
-    s.scopedBloc((s) => HomeBloc(s.get()));
+  ..scope<HomePage>((scope) {
+    scope
+      ..scopedBloc((s) => UserBloc(s.get()))
+      ..scoped((s) => RepositorySample(s.get()));
   })
   ..scope<SignUpPage>((s) {
     s.scopedBloc((s) => SignUpBloc(s.get()));

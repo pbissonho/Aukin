@@ -2,6 +2,7 @@ using System.Linq;
 using System.Text.Json;
 using AspNetCore.Jwt.Sample.Config;
 using AspNetCore.Jwt.Sample.Controllers.Error;
+using AspNetCore.Jwt.Sample.EmailService;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -31,6 +32,14 @@ namespace AspNetCore.Jwt.Sample
             // When you have specifics configurations (see inside this method)
             services.AddCustomIdentityConfiguration(Configuration);
 
+             services.AddDistributedRedisCache(options =>
+            {
+                options.Configuration =
+                    Configuration.GetConnectionString("ConexaoRedis");
+                options.InstanceName = "APICotacoes-";
+            });
+
+            services.AddMemoryCache();
 
             services.Configure<ApiBehaviorOptions>(options =>
            {
@@ -56,7 +65,7 @@ namespace AspNetCore.Jwt.Sample
 
             services.AddSwaggerConfiguration();
 
-            services.AddDependencyInjectionConfiguration();
+            services.AddDependencyInjectionConfiguration(Configuration);
         }
 
         public async void Configure(
