@@ -66,9 +66,22 @@ namespace AspNetCore.Jwt.Sample.Controllers
 
         }
 
-
         [HttpPost("reset")]
         public async Task<ActionResult> ResetPassword(ResetPasswordModel model, [FromServices] IMemoryCache cache)
+        {
+            var user = await _userManager.FindByEmailAsync(model.Email);
+
+            if (user == null)
+            {
+                return BadRequest(ErrorFormat.SerializeError(new BadRequestError("Invalid reset credentiais")));
+            }
+
+            await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
+            return Ok("Ok");
+        }
+
+        [HttpPost("reset-token")]
+        public async Task<ActionResult> ResetAcessTokenPassword(ResetTokenPasswordModel model, [FromServices] IMemoryCache cache)
         {
             string jsonError = ErrorFormat.SerializeError(new BadRequestError("Invalid reset credentiais"));
             var user = await _userManager.FindByEmailAsync(model.Email);
@@ -95,9 +108,8 @@ namespace AspNetCore.Jwt.Sample.Controllers
                 var error = new BadRequestError();
                 return BadRequest(jsonError);
             }
-
-            await _userManager.ResetPasswordAsync(user, token, model.Password);
-            return Ok("Reset finished successfully.");
+            //await _userManager.ResetPasswordAsync(user, token, model.Password);
+            return Ok(new ResetAcessTokenPasswordModel(token));
         }
 
         [HttpPost("register")]

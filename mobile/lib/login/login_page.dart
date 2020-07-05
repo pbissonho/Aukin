@@ -1,4 +1,6 @@
+import 'package:authentication/forget_password/forget/forget_page.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:authentication/shared/widgets.dart';
@@ -7,6 +9,9 @@ import 'package:koin_flutter/koin_flutter.dart';
 import 'bloc/login_bloc.dart';
 import 'bloc/login_event.dart';
 import 'bloc/login_state.dart';
+
+var color = Color(0xff5d6abe);
+
 
 class Login extends StatefulWidget {
   static Route route() {
@@ -93,7 +98,7 @@ class _LoginFormState extends State<LoginForm> {
                 child: SingleChildScrollView(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       Text(
@@ -129,6 +134,38 @@ class _LoginFormState extends State<LoginForm> {
                                 _nameController.value.text, 'Aa12345678!'));
                           }
                         },
+                      ),
+                      SizedBox(
+                        height: 35,
+                      ),
+                      Text.rich(
+                        TextSpan(
+                          text: 'Forget password? ',
+                          style: GoogleFonts.quicksand(
+                              textStyle: TextStyle(inherit: false),
+                              fontSize: 19,
+                              fontWeight: FontWeight.bold,
+                              color: color), // default text style
+                          children: <TextSpan>[
+                            TextSpan(
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                      builder: (c) {
+                                        return ForgetPage();
+                                      },
+                                    ));
+                                  },
+                                text: 'Reset here.',
+                                style: GoogleFonts.quicksand(
+                                    decoration: TextDecoration.underline,
+                                    textStyle: TextStyle(inherit: false),
+                                    fontSize: 19,
+                                    fontWeight: FontWeight.bold,
+                                    color: color)),
+                          ],
+                        ),
                       ),
                       SizedBox(
                         height: 40,

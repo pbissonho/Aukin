@@ -18,13 +18,25 @@ class IdentiyUser {
   factory IdentiyUser.fromToken(IdentityToken token) {
     var claims = JWT.parse(token.accessToken).claims;
     var role = (claims['role']);
-    var user = IdentiyUser(
-        userName: token.userToken.name,
-        roles: [role],
-        email: token.userToken.email,
-        accessClaims: token.userToken.claims
-            .map<IdentiyClaim>((c) => IdentiyClaim(c.value, c.type))
-            .toList());
+    IdentiyUser user;
+    if (role is List) {
+      user = IdentiyUser(
+          userName: token.userToken.name,
+          roles: ["BASIC"],
+          email: token.userToken.email,
+          accessClaims: token.userToken.claims
+              .map<IdentiyClaim>((c) => IdentiyClaim(c.value, c.type))
+              .toList());
+    } else {
+      user = IdentiyUser(
+          userName: token.userToken.name,
+          roles: [role],
+          email: token.userToken.email,
+          accessClaims: token.userToken.claims
+              .map<IdentiyClaim>((c) => IdentiyClaim(c.value, c.type))
+              .toList());
+    }
+
     return user;
   }
 
@@ -86,6 +98,33 @@ class IdentiyAuth {
   }) async {
     await _client.createUserWithRegisterCredentials(
         username: username, password: password, userEmail: useEmail);
+  }
+
+  Future<void> resetPassword(
+      {@required String password,
+      @required String confirmPassword,
+      @required String email,
+      @required String token}) async {
+    await _client.resetPassword(
+        email: email,
+        token: token,
+        password: password,
+        confirmPassword: confirmPassword);
+  }
+
+  Future<String> verifyCode(
+      {@required String code, @required String email}) async {
+    var token = await _client.verifyCode(
+      email: email,
+      code: code,
+    );
+    return token;
+  }
+
+  Future<void> generatePasswordResetToken({
+    @required String email,
+  }) async {
+    await _client.generatePasswordResetToken(email: email);
   }
 
   Future<void> signOut() async {

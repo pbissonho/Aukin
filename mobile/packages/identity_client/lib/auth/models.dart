@@ -1,11 +1,6 @@
 class AccessCredentials {
   AccessCredentials({this.name, this.password});
 
-  AccessCredentials.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    password = json['password'];
-  }
-
   String name;
   String password;
 
@@ -20,13 +15,6 @@ class AccessCredentials {
 class RegisterCredentials {
   RegisterCredentials(
       {this.email, this.name, this.password, this.confirmPassword});
-
-  RegisterCredentials.fromJson(Map<String, dynamic> json) {
-    email = json['email'];
-    name = json['name'];
-    password = json['password'];
-    confirmPassword = json['confirmPassword'];
-  }
 
   String email;
   String name;
@@ -142,6 +130,65 @@ class ErrorModel {
     data['Messages'] = this.messages;
     data['StatusCode'] = this.statusCode;
     data['StatusDescription'] = this.statusDescription;
+    return data;
+  }
+}
+
+class ForgotPasswordModel {
+  ForgotPasswordModel({this.email});
+  String email;
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['email'] = this.email;
+    return data;
+  }
+}
+
+class VerifyCodeModel {
+  VerifyCodeModel({this.email, this.code});
+
+  String email;
+  String code;
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['email'] = this.email;
+    data['code'] = this.code;
+    return data;
+  }
+}
+
+class VerifyCodeResponse {
+  VerifyCodeResponse({this.token});
+
+  VerifyCodeResponse.fromJson(Map<String, dynamic> json) {
+    token = json['token'];
+  }
+  String token;
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['token'] = this.token;
+    return data;
+  }
+}
+
+class ResetPasswordModel {
+  ResetPasswordModel(
+      {this.password, this.confirmPassword, this.email, this.token});
+
+  String password;
+  String confirmPassword;
+  String email;
+  String token;
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['password'] = this.password;
+    data['confirmPassword'] = this.confirmPassword;
+    data['email'] = this.email;
+    data['code'] = this.token;
     return data;
   }
 }

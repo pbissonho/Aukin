@@ -46,7 +46,7 @@ class _AppState extends State<App> {
 
     startKoin((app) {
       app.printLogger(level: Level.debug);
-      app.modules([coreModule, authModule, authScopesModule]);
+      app.modules(dev);
     });
   }
 

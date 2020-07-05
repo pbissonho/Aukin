@@ -47,6 +47,54 @@ class IdentityService {
     }
   }
 
+  Future<void> generatePasswordResetToken(ForgotPasswordModel model) async {
+    Response response;
+
+    try {
+      response = await _dio.post("/api/account/send", data: model.toJson());
+
+      if (response.statusCode != 200) {
+        throw ServerException(ErrorModel.fromJson(response.data));
+      }
+    } on DioError catch (error) {
+      throw ServerException(
+          ErrorModel.fromJson(json.decode(error.response.data)));
+    }
+  }
+
+  Future<VerifyCodeResponse> verifyCode(VerifyCodeModel model) async {
+    Response response;
+
+    try {
+      response =
+          await _dio.post("/api/account/reset-token", data: model.toJson());
+
+      if (response.statusCode == 200) {
+        return VerifyCodeResponse.fromJson(response.data);
+      } else {
+        throw ServerException(ErrorModel.fromJson(response.data));
+      }
+    } on DioError catch (error) {
+      throw ServerException(
+          ErrorModel.fromJson(json.decode(error.response.data)));
+    }
+  }
+
+  Future<void> resetPassword(ResetPasswordModel model) async {
+    Response response;
+
+    try {
+      response = await _dio.post("/api/account/reset", data: model.toJson());
+
+      if (response.statusCode != 200) {
+        throw ServerException(ErrorModel.fromJson(response.data));
+      }
+    } on DioError catch (error) {
+      throw ServerException(
+          ErrorModel.fromJson(json.decode(error.response.data)));
+    }
+  }
+
   Future<bool> createUserWithRegisterCredentials(
       RegisterCredentials registerCredentials) async {
     Response response;
@@ -72,6 +120,9 @@ class IdentityService {
 }
 
 class FakeIdentityService implements IdentityService {
+  @override
+  Dio get _dio => Dio();
+
   Future<IdentityToken> signInWithAccessCredentials(
       String userName, String password) async {
     return IdentityToken(
@@ -91,5 +142,17 @@ class FakeIdentityService implements IdentityService {
   }
 
   @override
-  Dio get _dio => Dio();
+  Future<void> generatePasswordResetToken(ForgotPasswordModel model) async {
+    await Future.delayed(Duration(milliseconds: 300));
+  }
+
+  @override
+  Future<void> resetPassword(ResetPasswordModel model) async {
+    await Future.delayed(Duration(milliseconds: 300));
+  }
+
+  @override
+  Future<VerifyCodeResponse> verifyCode(VerifyCodeModel model) async {
+    return VerifyCodeResponse(token: "");
+  }
 }

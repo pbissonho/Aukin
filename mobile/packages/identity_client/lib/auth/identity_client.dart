@@ -86,6 +86,35 @@ class IdentityClient {
         confirmPassword: password));
   }
 
+  Future<void> resetPassword(
+      {@required String password,
+      @required String confirmPassword,
+      @required String email,
+      @required String token}) async {
+    await identityService.resetPassword(ResetPasswordModel(
+        email: email,
+        password: password,
+        token: token,
+        confirmPassword: confirmPassword));
+  }
+
+  Future<String> verifyCode(
+      {@required String email, @required String code}) async {
+    var result = await identityService.verifyCode(VerifyCodeModel(
+      email: email,
+      code: code,
+    ));
+    return result.token;
+  }
+
+  Future<void> generatePasswordResetToken({
+    @required String email,
+  }) async {
+    await identityService.generatePasswordResetToken(ForgotPasswordModel(
+      email: email,
+    ));
+  }
+
   Future<void> unauthenticate() async {
     await fresh.removeToken();
   }

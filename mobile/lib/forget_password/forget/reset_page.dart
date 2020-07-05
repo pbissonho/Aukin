@@ -4,53 +4,40 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:authentication/login/login_page.dart';
 import 'package:authentication/shared/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'bloc/forget_bloc.dart';
 
-import 'package:koin/instace_scope.dart';
-import 'bloc/bloc.dart';
+class ResetPage extends StatefulWidget {
+  final ForgetBloc forgetBloc;
 
-class SignUpPage extends StatefulWidget {
+  const ResetPage({Key key, @required this.forgetBloc}) : super(key: key);
+
   @override
-  _SignUpPageState createState() => _SignUpPageState();
+  _ResetPageState createState() => _ResetPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
-  SignUpBloc _signUpBloc;
-
-  @override
-  void initState() {
-    _signUpBloc = widget.scope.get<SignUpBloc>();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    widget.scope.close();
-    super.dispose();
-  }
-
+class _ResetPageState extends State<ResetPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Stack(
       children: <Widget>[
-        SignUpForm(
-          signUpBloc: _signUpBloc,
+        ResetForm(
+          forgetBloc: widget.forgetBloc,
         ),
-        BlocListener<SignUpBloc, SignUpState>(
-            bloc: _signUpBloc,
+        BlocListener<ForgetBloc, ForgetState>(
+            bloc: widget.forgetBloc,
             listener: (BuildContext context, state) {
-              if (state is SuccessRegistered) {
+              if (state.status == ForgetStateStatus.successAccountReset) {
                 Scaffold.of(context)
                   ..showSnackBar(
                     SnackBar(
-                      content:
-                          Text("Your account has been successfully created."),
+                      content: Text("Account reset successfully."),
                       backgroundColor: Colors.green,
                     ),
                   );
               }
 
-              if (state is SignUpCreatedAccount) {
+              if (state.status == ForgetStateStatus.resetCompleted) {
                 FocusScope.of(context).requestFocus(FocusNode());
                 Scaffold.of(context).removeCurrentSnackBar();
                 Navigator.pushAndRemoveUntil(
@@ -61,16 +48,16 @@ class _SignUpPageState extends State<SignUpPage> {
                   (_) => false,
                 );
               }
-              if (state is SignUpFailed) {
+              if (state.status == ForgetStateStatus.failed) {
                 Scaffold.of(context)
                   ..showSnackBar(
                     SnackBar(
                       duration: Duration(milliseconds: 4000),
                       content: ListView.builder(
                         shrinkWrap: true,
-                        itemCount: state.messages.length,
+                        itemCount: 1,
                         itemBuilder: (BuildContext context, int index) {
-                          return Text(state.messages[index]);
+                          return Text("state.messages[index]");
                         },
                       ),
                       backgroundColor: Colors.red,
@@ -78,32 +65,33 @@ class _SignUpPageState extends State<SignUpPage> {
                   );
               }
             },
-            child: StreamBuilder<SignUpState>(
-                stream: _signUpBloc,
-                builder: (context, snapshot) {
-                  var data = snapshot.data;
-                  if (snapshot.data is SignUpStarted) return Loading.initial();
-                  if (data is SignUpFailed) return Loading.failed();
-                  if (snapshot.data is SignUpLoading) Loading.loading();
+            child: StreamBuilder<ForgetState>(
+              stream: widget.forgetBloc,
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) return Loading.initial();
+                if (snapshot.data.status == ForgetStateStatus.initial)
                   return Loading.initial();
-                })),
-      ],
+                if (snapshot.data.status == ForgetStateStatus.failed)
+                  return Loading.failed();
+                if (snapshot.data.status == ForgetStateStatus.loading)
+                  return Loading.loading();
+                return Loading.initial();
+              }),
+        )],
     ));
   }
 }
 
-class SignUpForm extends StatefulWidget {
-  final SignUpBloc signUpBloc;
+class ResetForm extends StatefulWidget {
+  final ForgetBloc forgetBloc;
 
-  const SignUpForm({Key key, this.signUpBloc}) : super(key: key);
+  const ResetForm({Key key, this.forgetBloc}) : super(key: key);
 
   @override
   _SignUpFormState createState() => _SignUpFormState();
 }
 
-class _SignUpFormState extends State<SignUpForm> {
-  TextEditingController _emailController;
-  TextEditingController _nameController;
+class _SignUpFormState extends State<ResetForm> {
   TextEditingController _passwordController;
   TextEditingController _passwordConfirmController;
 
@@ -111,8 +99,6 @@ class _SignUpFormState extends State<SignUpForm> {
 
   @override
   void initState() {
-    _emailController = TextEditingController();
-    _nameController = TextEditingController();
     _passwordController = TextEditingController();
     _passwordConfirmController = TextEditingController();
     super.initState();
@@ -135,7 +121,7 @@ class _SignUpFormState extends State<SignUpForm> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text.rich(
-                        TextSpan(text: "Sign \n     Up"),
+                        TextSpan(text: "Reset"),
                         style: GoogleFonts.quicksand(
                             fontSize: 55,
                             fontWeight: FontWeight.w500,
@@ -144,24 +130,15 @@ class _SignUpFormState extends State<SignUpForm> {
                       SizedBox(
                         height: 15,
                       ),
-                      CustomTextField(
-                          controller: _nameController,
-                          labelTest: "Name",
-                          textInputType: TextInputType.text),
                       SizedBox(
                         height: textFieldDistance,
-                      ),
-                      CustomTextField(
-                        controller: _emailController,
-                        labelTest: "Email",
-                        textInputType: TextInputType.emailAddress,
                       ),
                       SizedBox(
                         height: textFieldDistance,
                       ),
                       CustomTextField(
                         controller: _passwordController,
-                        labelTest: "Password",
+                        labelTest: "New Password",
                         textInputType: TextInputType.visiblePassword,
                         obscureText: true,
                       ),
@@ -170,7 +147,7 @@ class _SignUpFormState extends State<SignUpForm> {
                       ),
                       CustomTextField(
                         controller: _passwordConfirmController,
-                        labelTest: "Confirm Password",
+                        labelTest: "Confirm New Password",
                         textInputType: TextInputType.visiblePassword,
                         obscureText: true,
                       ),
@@ -178,15 +155,12 @@ class _SignUpFormState extends State<SignUpForm> {
                         height: 35,
                       ),
                       LogInButton(
-                        buttonText: "Sign In",
+                        buttonText: "Reset",
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
-                            widget.signUpBloc.add(
-                                CreateUserWithRegisterCredentials(
-                                    confirmPassword: 'Aa12345678!',
-                                    email: _emailController.value.text,
-                                    name: _nameController.value.text,
-                                    password: 'Aa12345678!'));
+                            widget.forgetBloc.add(ResetAccountEvent(
+                                confirmpassword: 'Aa12345678!',
+                                password: 'Aa12345678!'));
                           }
                         },
                       ),

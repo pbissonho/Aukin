@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 
 class RepositorySample {
@@ -17,5 +15,21 @@ class RepositorySample {
   Future<String> post() async {
     var response = await dio.post("/api/sample/write");
     return response.data;
+  }
+}
+
+class RepositorySampleFake implements RepositorySample {
+  @override
+  // TODO: implement dio
+  Dio get dio => null;
+
+  @override
+  Future<String> get() async{
+  return "Hello";
+  }
+
+  @override
+  Future<String> post() async{
+    return "Hello";
   }
 }
