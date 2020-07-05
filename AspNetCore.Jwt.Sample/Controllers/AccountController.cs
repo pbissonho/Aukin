@@ -18,6 +18,7 @@ using AspNetCore.Jwt.Sample.EmailService.models;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
+using System;
 
 namespace AspNetCore.Jwt.Sample.Controllers
 {
@@ -58,7 +59,6 @@ namespace AspNetCore.Jwt.Sample.Controllers
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var code = RandomGenerator.GenerateString(8);
             cache.Set(code, token);
-            cache.Set(model.Email, "" + 1);
 
             await _emailService.SendEmailAsync(model.Email, "Reset password account.", "Code:" + code);
 
@@ -78,30 +78,27 @@ namespace AspNetCore.Jwt.Sample.Controllers
                 return BadRequest(jsonError);
             }
 
-            var delayString = cache.Get(model.Email) as string;
+            var lockoutEndDate = await _userManager.GetLockoutEndDateAsync(user);
 
-            if (delayString != null)
+            if (lockoutEndDate > DateTimeOffset.Now)
             {
-                var delay = int.Parse(delayString);
-
-                await Task.Delay(delay * 1000);
+                return BadRequest(ErrorFormat.SerializeError(new BadRequestError("Too many attempts to reset. Wait a few minutes and try again")));
             }
-
 
             var token = cache.Get(model.Code) as string;
 
             if (token == null)
             {
-                cache.Set(model.Email, "" + int.Parse(delayString) * 2);
+
+                var time = DateTimeOffset.Now.AddSeconds(30);
+                await _userManager.SetLockoutEndDateAsync(user, time);
+                var error = new BadRequestError();
                 return BadRequest(jsonError);
             }
 
             await _userManager.ResetPasswordAsync(user, token, model.Password);
-
             return Ok("Reset finished successfully.");
         }
-
-
 
         [HttpPost("register")]
         public async Task<ActionResult> Register(CustomRegisterUser registerUser)
@@ -146,6 +143,8 @@ namespace AspNetCore.Jwt.Sample.Controllers
                 var tokeResponse = createToken(loginUser.Name);
                 return Ok(tokeResponse);
             }
+
+
 
             if (result.IsLockedOut)
             {
