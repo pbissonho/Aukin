@@ -31,7 +31,9 @@ Design created by [Andrea](https://dribbble.com/shots/5601302-Mobile-Sign-Up-UI)
 ### Start
 
 git clone https://github.com/pbissonho/Flutter-Authentication.git
+
 cd mobile
+
 flutter run
 
 
@@ -40,6 +42,7 @@ flutter run
 Just change the line 'app.modules (prod)' to 'app.modules (dev)' in the file 'app.dart'.
 Then the application will use the services/repositories fakes.
 
+```dart
 @override
   void initState() {
     super.initState();
@@ -48,13 +51,13 @@ Then the application will use the services/repositories fakes.
       app.printLogger(level: Level.debug);
       app.module(coreModule);
       // Development
-      app.modules(dev);
+      app.module(dev);
 
       //Production
       //app.module(prod)
     });
   }
-
+```
 
 ## Backend
 
