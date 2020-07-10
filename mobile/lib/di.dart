@@ -14,13 +14,15 @@ import 'login/login_page.dart';
 import 'signup/bloc/sign_up_bloc.dart';
 import 'signup/sign_up_page.dart';
 
-String url = "https://authtest4.azurewebsites.net";
-var coreModule = Module()..single((s) => Dio(BaseOptions(baseUrl: url)));
 
-var dev = authModuleFake + authScopesModuleFake;
-var prod = authModule + authScopesModule;
+final url = "https://<youAzureAppName>.azurewebsites.net";
 
-var authModule = Module()
+final coreModule = Module()..single((s) => Dio(BaseOptions(baseUrl: url)));
+
+final dev = authModuleFake + authScopesModuleFake;
+final prod = authModule + authScopesModule;
+
+final authModule = Module()
   ..single((s) => IdentityClient(
       fresh: IdentityFresh(SecureTokenStorage()),
       httpClient: s.get(),
@@ -28,7 +30,7 @@ var authModule = Module()
   ..single((s) => IdentiyAuth(s.get()))
   ..bloc((s) => AuthenticationBloc(s.get()));
 
-var authScopesModule = module()
+final authScopesModule = module()
   ..scope<Login>((s) {
     s.scopedBloc((s) => LoginBloc(s.get()));
   })
@@ -44,7 +46,7 @@ var authScopesModule = module()
     s.scopedBloc((s) => ForgetBloc(s.get()));
   });
 
-var authModuleFake = Module()
+final authModuleFake = Module()
   ..single((s) => IdentityClient(
       fresh: IdentityFresh(SecureTokenStorage()),
       httpClient: s.get(),
@@ -52,7 +54,7 @@ var authModuleFake = Module()
   ..single((s) => IdentiyAuth(s.get()))
   ..bloc((s) => AuthenticationBloc(s.get()));
 
-var authScopesModuleFake = module()
+final authScopesModuleFake = module()
   ..scope<Login>((s) {
     s.scopedBloc((s) => LoginBloc(s.get()));
   })

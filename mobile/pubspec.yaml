@@ -10,7 +10,7 @@ dependencies:
   equatable: ^1.1.1
   flutter:
     sdk: flutter
-  flutter_bloc: ^4.0.0
+  flutter_bloc: ^5.0.0
   flutter_custom_clippers: ^1.1.1
   google_fonts: ^1.0.0
   identity_auth:
