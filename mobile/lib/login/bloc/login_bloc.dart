@@ -8,7 +8,7 @@ import 'package:identity_client/identity_client.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> with Disposable {
   final IdentiyAuth identiyAuth;
 
-  LoginBloc(this.identiyAuth);
+  LoginBloc(this.identiyAuth) : super(LoginStarted());
 
   Stream<LoginState> _signInWithCredentials(LoginWithCredentials event) async* {
     yield LoginLoading();
@@ -27,9 +27,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with Disposable {
       yield LoginFailure(["Login failed."]);
     }
   }
-
-  @override
-  LoginState get initialState => LoginStarted();
 
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {

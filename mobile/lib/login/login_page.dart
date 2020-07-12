@@ -21,19 +21,13 @@ class Login extends StatefulWidget {
   _LoginState createState() => _LoginState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginState extends State<Login> with ScopeStateMixin {
   LoginBloc loginBloc;
 
   @override
   void initState() {
-    loginBloc = widget.scope.get();
+    loginBloc = currentScope.get();
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    widget.scope.close();
-    super.dispose();
   }
 
   @override

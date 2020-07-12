@@ -40,12 +40,17 @@ class CustomDrawer extends StatelessWidget {
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> with ScopeStateMixin{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: CustomDrawer(
-        homeBloc: scope.get(),
+        homeBloc: currentScope.get(),
       ),
       appBar: AppBar(title: const Text('Home')),
       body: Column(
@@ -57,7 +62,7 @@ class HomePage extends StatelessWidget {
             style: TextStyle(fontSize: 32),
           ))),
           FutureBuilder<String>(
-            future: scope.get<RepositorySample>().get(),
+            future: currentScope.get<RepositorySample>().get(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) return Text(snapshot.data);
 

@@ -8,7 +8,7 @@ import 'sign_up_state.dart';
 class SignUpBloc extends Bloc<SignUpEvent, SignUpState> with Disposable {
   final IdentityClient identityClient;
 
-  SignUpBloc(this.identityClient);
+  SignUpBloc(this.identityClient) : super(SignUpStarted());
 
   Stream<SignUpState> _signUpHandler(
       CreateUserWithRegisterCredentials event) async* {
@@ -31,9 +31,6 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> with Disposable {
       ]);
     }
   }
-
-  @override
-  SignUpState get initialState => SignUpStarted();
 
   @override
   Stream<SignUpState> mapEventToState(SignUpEvent event) async* {

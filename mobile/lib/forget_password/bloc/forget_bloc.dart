@@ -10,12 +10,9 @@ part 'forget_event.dart';
 part 'forget_state.dart';
 
 class ForgetBloc extends Bloc<ForgetEvent, ForgetState> implements Disposable {
+  ForgetBloc(this.identiyAuth) : super(ForgetState());
+
   final IdentiyAuth identiyAuth;
-
-  ForgetBloc(this.identiyAuth);
-
-  @override
-  ForgetState get initialState => ForgetState();
 
   @override
   Stream<ForgetState> mapEventToState(

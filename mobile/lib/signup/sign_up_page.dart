@@ -5,27 +5,21 @@ import 'package:authentication/login/login_page.dart';
 import 'package:authentication/shared/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:koin/instace_scope.dart';
 import 'bloc/bloc.dart';
+import 'package:koin_flutter/koin_flutter.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
   _SignUpPageState createState() => _SignUpPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _SignUpPageState extends State<SignUpPage> with ScopeStateMixin {
   SignUpBloc _signUpBloc;
 
   @override
   void initState() {
-    _signUpBloc = widget.scope.get<SignUpBloc>();
+    _signUpBloc = currentScope.get<SignUpBloc>();
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    widget.scope.close();
-    super.dispose();
   }
 
   @override

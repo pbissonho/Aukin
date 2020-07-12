@@ -7,8 +7,7 @@ part 'home_event.dart';
 part 'home_state.dart';
 
 class Home extends Bloc<HomeEvent, HomeState> {
-  @override
-  HomeState get initialState => HomeInitial();
+  Home(HomeState initialState) : super(HomeInitial());
 
   @override
   Stream<HomeState> mapEventToState(

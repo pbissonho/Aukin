@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:authentication/shared/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:koin/instace_scope.dart';
+import 'package:koin_flutter/koin_flutter.dart';
 import 'bloc/forget_bloc.dart';
 import 'code_page.dart';
 
@@ -12,19 +12,13 @@ class ForgetPage extends StatefulWidget {
   _SignUpPageState createState() => _SignUpPageState();
 }
 
-class _SignUpPageState extends State<ForgetPage> {
+class _SignUpPageState extends State<ForgetPage> with ScopeStateMixin {
   ForgetBloc _forgetBloc;
 
   @override
   void initState() {
-    _forgetBloc = widget.scope.get<ForgetBloc>();
+    _forgetBloc = currentScope.get<ForgetBloc>();
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    widget.scope.close();
-    super.dispose();
   }
 
   @override

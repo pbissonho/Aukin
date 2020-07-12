@@ -12,7 +12,8 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState>
     implements Disposable {
   AuthenticationBloc(IdentiyAuth userRepository)
       : assert(userRepository != null),
-        _userRepository = userRepository {
+        _userRepository = userRepository,
+        super(AuthenticationUnknown()) {
     _subscription = _userRepository.authenticationStatus.listen((status) {
       add(AuthenticationStatusChanged(status));
     });
@@ -20,9 +21,6 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState>
 
   StreamSubscription<UserAuthenticationStatus> _subscription;
   final IdentiyAuth _userRepository;
-
-  @override
-  AuthenticationState get initialState => AuthenticationUnknown();
 
   @override
   Stream<AuthenticationState> mapEventToState(
