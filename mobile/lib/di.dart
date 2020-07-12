@@ -14,8 +14,7 @@ import 'login/login_page.dart';
 import 'signup/bloc/sign_up_bloc.dart';
 import 'signup/sign_up_page.dart';
 
-
-final url = "https://<youAzureAppName>.azurewebsites.net";
+final url = "https://youAzureAppName.azurewebsites.net";
 
 final coreModule = Module()..single((s) => Dio(BaseOptions(baseUrl: url)));
 
