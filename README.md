@@ -49,15 +49,18 @@ Then the application will use the services/repositories fakes.
 
     startKoin((app) {
       app.printLogger(level: Level.debug);
-      app.module(coreModule);
+
       // Development
-      app.module(dev);
+      app.modules(dev);
 
       //Production
       //app.module(prod)
     });
   }
 ```
+
+  
+
 
 ## Backend
 
