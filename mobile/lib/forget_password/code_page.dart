@@ -10,9 +10,9 @@ import 'bloc/forget_bloc.dart';
 import 'reset_page.dart';
 
 class CodePage extends StatefulWidget {
-  final ForgetBloc forgetBloc;
-
   const CodePage({Key key, @required this.forgetBloc}) : super(key: key);
+
+  final ForgetBloc forgetBloc;
 
   @override
   _CodePageState createState() => _CodePageState();
@@ -88,9 +88,9 @@ class _CodePageState extends State<CodePage> {
 }
 
 class CodeForm extends StatefulWidget {
-  final ForgetBloc forgetBloc;
-
   const CodeForm({Key key, this.forgetBloc}) : super(key: key);
+
+  final ForgetBloc forgetBloc;
 
   @override
   _CodeFormFormState createState() => _CodeFormFormState();

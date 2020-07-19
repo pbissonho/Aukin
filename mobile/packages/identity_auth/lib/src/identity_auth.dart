@@ -6,10 +6,10 @@ import 'package:identity_client/identity_client.dart';
 import 'package:corsac_jwt/corsac_jwt.dart';
 
 class IdentiyClaim {
+  IdentiyClaim(this.value, this.type);
+
   final String value;
   final String type;
-
-  IdentiyClaim(this.value, this.type);
 }
 
 class IdentiyUser {

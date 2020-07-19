@@ -7,16 +7,15 @@ import 'package:identity_auth/identity_auth.dart';
 part 'user_event.dart';
 
 class UserBloc extends Bloc<UserEvent, IdentiyUser> implements Disposable {
-  final IdentiyAuth identiyAuth;
-
-  StreamSubscription<IdentiyUser> _subscription;
-
   UserBloc(this.identiyAuth)
       : super(IdentiyUser(userName: '', email: '', roles: [])) {
     _subscription = identiyAuth.currentUser.listen((onData) {
       add(UserChanged(onData));
     });
   }
+  final IdentiyAuth identiyAuth;
+
+  StreamSubscription<IdentiyUser> _subscription;
 
   @override
   Stream<IdentiyUser> mapEventToState(

@@ -4,6 +4,7 @@ import 'package:identity_client/identity_client.dart';
 import 'package:koin/koin.dart';
 import 'package:koin_flutter/koin_bloc.dart';
 import 'package:identity_auth/identity_auth.dart';
+import 'config.dart';
 import 'forget_password/bloc/forget_bloc.dart';
 import 'forget_password/forget_page.dart';
 import 'home/bloc/user_bloc.dart';
@@ -13,58 +14,31 @@ import 'login/bloc/login_bloc.dart';
 import 'login/login_page.dart';
 import 'signup/bloc/sign_up_bloc.dart';
 import 'signup/sign_up_page.dart';
+import 'scope_one_extension.dart';
 
-final url = "https://youAzureAppName.azurewebsites.net";
+final dev = [dataModuleFake, authModule];
+final prod = [dataModule, authModule];
 
-final coreModule = Module()..single((s) => Dio(BaseOptions(baseUrl: url)));
+final dio = Dio(BaseOptions(baseUrl: apiUrl));
 
-final dev = authModuleFake + authScopesModuleFake;
-final prod = authModule + authScopesModule;
+final dataModule = Module()
+  ..single((s) => IdentityService(Dio(BaseOptions(baseUrl: apiUrl))))
+  ..single((s) => RepositorySample(dio));
+
+final dataModuleFake = Module()
+  ..single<IdentityService>((s) => FakeIdentityService())
+  ..single<RepositorySample>((s) => RepositorySampleFake());
 
 final authModule = Module()
   ..single((s) => IdentityClient(
       fresh: IdentityFresh(SecureTokenStorage()),
-      httpClient: s.get(),
-      identityService: IdentityService(Dio(BaseOptions(baseUrl: url)))))
+      httpClient: dio,
+      identityService: s.get()))
   ..single((s) => IdentiyAuth(s.get()))
-  ..bloc((s) => AuthenticationBloc(s.get()));
+  ..bloc((s) => AuthenticationBloc(s.get()))
+  ..scopeOneBloc<LoginBloc, Login>((scope) => LoginBloc(scope.get()))
+  ..scopeOneBloc<UserBloc, HomePage>((scope) => UserBloc(scope.get()))
+  ..scopeOneBloc<SignUpBloc, SignUpPage>((scope) => SignUpBloc(scope.get()))
+  ..scopeOneBloc<ForgetBloc, ForgetPage>((scope) => ForgetBloc(scope.get()));
 
-final authScopesModule = module()
-  ..scope<Login>((s) {
-    s.scopedBloc((s) => LoginBloc(s.get()));
-  })
-  ..scope<HomePage>((scope) {
-    scope
-      ..scopedBloc((s) => UserBloc(s.get()))
-      ..scoped<RepositorySample>((s) => RepositorySample(s.get()));
-  })
-  ..scope<SignUpPage>((s) {
-    s.scopedBloc((s) => SignUpBloc(s.get()));
-  })
-  ..scope<ForgetPage>((s) {
-    s.scopedBloc((s) => ForgetBloc(s.get()));
-  });
 
-final authModuleFake = Module()
-  ..single((s) => IdentityClient(
-      fresh: IdentityFresh(SecureTokenStorage()),
-      httpClient: s.get(),
-      identityService: FakeIdentityService()))
-  ..single((s) => IdentiyAuth(s.get()))
-  ..bloc((s) => AuthenticationBloc(s.get()));
-
-final authScopesModuleFake = module()
-  ..scope<Login>((s) {
-    s.scopedBloc((s) => LoginBloc(s.get()));
-  })
-  ..scope<HomePage>((scope) {
-    scope
-      ..scopedBloc((s) => UserBloc(s.get()))
-      ..scoped<RepositorySample>((s) => RepositorySampleFake());
-  })
-  ..scope<SignUpPage>((s) {
-    s.scopedBloc((s) => SignUpBloc(s.get()));
-  })
-  ..scope<ForgetPage>((s) {
-    s.scopedBloc((s) => ForgetBloc(s.get()));
-  });

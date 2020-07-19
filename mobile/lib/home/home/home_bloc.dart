@@ -12,7 +12,5 @@ class Home extends Bloc<HomeEvent, HomeState> {
   @override
   Stream<HomeState> mapEventToState(
     HomeEvent event,
-  ) async* {
-    // TODO: implement mapEventToState
-  }
+  ) async* {}
 }

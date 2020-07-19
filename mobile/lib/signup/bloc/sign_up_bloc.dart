@@ -6,9 +6,9 @@ import 'sign_up_event.dart';
 import 'sign_up_state.dart';
 
 class SignUpBloc extends Bloc<SignUpEvent, SignUpState> with Disposable {
-  final IdentityClient identityClient;
-
   SignUpBloc(this.identityClient) : super(SignUpStarted());
+
+  final IdentityClient identityClient;
 
   Stream<SignUpState> _signUpHandler(
       CreateUserWithRegisterCredentials event) async* {

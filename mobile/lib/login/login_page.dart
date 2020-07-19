@@ -34,7 +34,7 @@ class _LoginState extends State<Login> with ScopeStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocListener<LoginBloc, LoginState>(
-          bloc: loginBloc,
+          bloc: currentScope.get(),
           listener: (context, state) {
             if (state is LoginFailure) {
               Scaffold.of(context)
@@ -59,9 +59,10 @@ class _LoginState extends State<Login> with ScopeStateMixin {
 }
 
 class LoginForm extends StatefulWidget {
+  const LoginForm({Key key, this.loginBloc}) : super(key: key);
+
   final LoginBloc loginBloc;
 
-  const LoginForm({Key key, this.loginBloc}) : super(key: key);
   @override
   _LoginFormState createState() => _LoginFormState();
 }

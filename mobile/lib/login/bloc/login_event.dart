@@ -8,10 +8,10 @@ abstract class LoginEvent extends Equatable {
 }
 
 class LoginWithCredentials extends LoginEvent {
+  LoginWithCredentials(this.name, this.password);
+
   final String name;
   final String password;
-
-  LoginWithCredentials(this.name, this.password);
 
   @override
   List<Object> get props => [name, password];

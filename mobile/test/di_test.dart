@@ -3,6 +3,6 @@ import 'package:koin_test/koin_test.dart';
 
 void main() {
   testKoinDeclaration('appModules', (app) {
-    app.modules([coreModule, authModule, authScopesModule]);
+    app.modules([dataModule, authModule]);
   }, checkParameters: checkParametersOf({}));
 }

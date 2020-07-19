@@ -20,16 +20,15 @@ class RepositorySample {
 
 class RepositorySampleFake implements RepositorySample {
   @override
-  // TODO: implement dio
   Dio get dio => null;
 
   @override
-  Future<String> get() async{
-  return "Hello";
+  Future<String> get() async {
+    return "Hello";
   }
 
   @override
-  Future<String> post() async{
+  Future<String> post() async {
     return "Hello";
   }
 }

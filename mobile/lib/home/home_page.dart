@@ -8,9 +8,9 @@ import 'package:identity_auth/identity_auth.dart';
 import 'repository_sample.dart';
 
 class CustomDrawer extends StatelessWidget {
-  final UserBloc homeBloc;
-
   const CustomDrawer({Key key, this.homeBloc}) : super(key: key);
+
+  final UserBloc homeBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with ScopeStateMixin{
+class _HomePageState extends State<HomePage> with ScopeStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

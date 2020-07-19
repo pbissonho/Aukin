@@ -87,9 +87,9 @@ class _SignUpPageState extends State<SignUpPage> with ScopeStateMixin {
 }
 
 class SignUpForm extends StatefulWidget {
-  final SignUpBloc signUpBloc;
-
   const SignUpForm({Key key, this.signUpBloc}) : super(key: key);
+
+  final SignUpBloc signUpBloc;
 
   @override
   _SignUpFormState createState() => _SignUpFormState();

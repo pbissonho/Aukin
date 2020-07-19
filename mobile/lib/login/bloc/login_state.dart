@@ -12,9 +12,9 @@ class LoginLoading extends LoginState {}
 class LoginStarted extends LoginState {}
 
 class LoginFailure extends LoginState {
-  final List<String> messages;
-
   LoginFailure(this.messages);
+
+  final List<String> messages;
 }
 
 class LoginSuccess extends LoginState {}

@@ -32,11 +32,6 @@ class RegisterCredentials {
 }
 
 class IdentityToken {
-  String accessToken;
-  int expiresIn;
-  String tokenType;
-  UserToken userToken;
-
   IdentityToken(
       {this.accessToken, this.expiresIn, this.tokenType, this.userToken});
 
@@ -48,6 +43,11 @@ class IdentityToken {
         ? new UserToken.fromJson(json['userToken'])
         : null;
   }
+
+  String accessToken;
+  int expiresIn;
+  String tokenType;
+  UserToken userToken;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -62,11 +62,6 @@ class IdentityToken {
 }
 
 class UserToken {
-  String id;
-  String email;
-  String name;
-  List<Claims> claims;
-
   UserToken({this.id, this.email, this.name, this.claims});
 
   UserToken.fromJson(Map<String, dynamic> json) {
@@ -81,6 +76,11 @@ class UserToken {
     }
   }
 
+  String id;
+  String email;
+  String name;
+  List<Claims> claims;
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
@@ -94,15 +94,15 @@ class UserToken {
 }
 
 class Claims {
-  String value;
-  String type;
-
   Claims({this.value, this.type});
 
   Claims.fromJson(Map<String, dynamic> json) {
     value = json['value'];
     type = json['type'];
   }
+
+  String value;
+  String type;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -113,10 +113,6 @@ class Claims {
 }
 
 class ErrorModel {
-  List<String> messages;
-  int statusCode;
-  String statusDescription;
-
   ErrorModel({this.messages, this.statusCode, this.statusDescription});
 
   ErrorModel.fromJson(Map<String, dynamic> json) {
@@ -124,6 +120,10 @@ class ErrorModel {
     statusCode = json['StatusCode'];
     statusDescription = json['StatusDescription'];
   }
+
+  List<String> messages;
+  int statusCode;
+  String statusDescription;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();

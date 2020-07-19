@@ -30,10 +30,6 @@ class ArroBack extends StatelessWidget {
 }
 
 class CustomTextField extends StatelessWidget {
-  final String labelTest;
-  final TextInputType textInputType;
-  final bool obscureText;
-  final TextEditingController controller;
   const CustomTextField(
       {Key key,
       this.labelTest,
@@ -41,6 +37,11 @@ class CustomTextField extends StatelessWidget {
       this.obscureText = false,
       this.controller})
       : super(key: key);
+
+  final String labelTest;
+  final TextInputType textInputType;
+  final bool obscureText;
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -65,10 +66,10 @@ class CustomTextField extends StatelessWidget {
 }
 
 class LogInButton extends StatelessWidget {
-  final String buttonText;
-  final void Function() onPressed;
   const LogInButton({Key key, this.buttonText, this.onPressed})
       : super(key: key);
+  final String buttonText;
+  final void Function() onPressed;
 
   @override
   Widget build(BuildContext context) {

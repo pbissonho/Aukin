@@ -90,9 +90,9 @@ class _SignUpPageState extends State<ForgetPage> with ScopeStateMixin {
 }
 
 class ForgetForm extends StatefulWidget {
-  final ForgetBloc signUpBloc;
-
   const ForgetForm({Key key, this.signUpBloc}) : super(key: key);
+
+  final ForgetBloc signUpBloc;
 
   @override
   _SignUpFormState createState() => _SignUpFormState();

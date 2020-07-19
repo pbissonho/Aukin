@@ -16,9 +16,9 @@ class SuccessRegistered extends SignUpState {}
 class SignUpCreatedAccount extends SignUpState {}
 
 class SignUpFailed extends SignUpState {
-  final List<String> messages;
-
   SignUpFailed(this.messages);
+
+  final List<String> messages;
 
   List<Object> get props => [messages];
 }

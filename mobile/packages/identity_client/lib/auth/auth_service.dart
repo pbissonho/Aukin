@@ -4,15 +4,15 @@ import 'package:dio/dio.dart';
 import 'models.dart';
 
 class IdentityServiceException implements Exception {
-  final List<String> messages;
-
   IdentityServiceException(this.messages);
+
+  final List<String> messages;
 }
 
 class ServerException implements Exception {
-  final ErrorModel error;
-
   ServerException(this.error);
+
+  final ErrorModel error;
 }
 
 class IdentityService {

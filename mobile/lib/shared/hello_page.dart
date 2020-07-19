@@ -9,9 +9,10 @@ var shadown = Color(0xff5E6CB1);
 var color = Color(0xff5d6abe);
 
 class BackgroundColor extends StatelessWidget {
+  const BackgroundColor({Key key, this.child}) : super(key: key);
+
   final Widget child;
 
-  const BackgroundColor({Key key, this.child}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -160,11 +161,12 @@ class HelloPage extends StatelessWidget {
 }
 
 class CustomButton extends StatelessWidget {
+  const CustomButton({Key key, this.buttonText, this.onPressed, this.textColor})
+      : super(key: key);
+
   final String buttonText;
   final void Function() onPressed;
   final Color textColor;
-  const CustomButton({Key key, this.buttonText, this.onPressed, this.textColor})
-      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

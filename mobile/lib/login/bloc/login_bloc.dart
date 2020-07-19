@@ -6,9 +6,9 @@ import 'login_state.dart';
 import 'package:identity_client/identity_client.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> with Disposable {
-  final IdentiyAuth identiyAuth;
-
   LoginBloc(this.identiyAuth) : super(LoginStarted());
+
+  final IdentiyAuth identiyAuth;
 
   Stream<LoginState> _signInWithCredentials(LoginWithCredentials event) async* {
     yield LoginLoading();

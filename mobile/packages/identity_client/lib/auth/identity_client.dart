@@ -50,15 +50,15 @@ class SecureTokenStorage implements TokenStorage<IdentityToken> {
 }
 
 class IdentityClient {
-  final Dio _httpClient;
-  final IdentityService identityService;
-  final IdentityFresh fresh;
-
   IdentityClient(
       {@required this.fresh,
       @required this.identityService,
-      @required Dio httpClient})
-      : _httpClient = httpClient..interceptors.add(fresh);
+      @required Dio httpClient}) {
+    httpClient..interceptors.add(fresh);
+  }
+
+  final IdentityService identityService;
+  final IdentityFresh fresh;
 
   Stream<AuthenticationStatus> get authenticationStatus =>
       fresh.authenticationStatus;

@@ -7,9 +7,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'bloc/forget_bloc.dart';
 
 class ResetPage extends StatefulWidget {
-  final ForgetBloc forgetBloc;
-
   const ResetPage({Key key, @required this.forgetBloc}) : super(key: key);
+
+  final ForgetBloc forgetBloc;
 
   @override
   _ResetPageState createState() => _ResetPageState();
@@ -25,47 +25,47 @@ class _ResetPageState extends State<ResetPage> {
           forgetBloc: widget.forgetBloc,
         ),
         BlocListener<ForgetBloc, ForgetState>(
-            bloc: widget.forgetBloc,
-            listener: (BuildContext context, state) {
-              if (state.status == ForgetStateStatus.successAccountReset) {
-                Scaffold.of(context)
-                  ..showSnackBar(
-                    SnackBar(
-                      content: Text("Account reset successfully."),
-                      backgroundColor: Colors.green,
-                    ),
-                  );
-              }
-
-              if (state.status == ForgetStateStatus.resetCompleted) {
-                FocusScope.of(context).requestFocus(FocusNode());
-                Scaffold.of(context).removeCurrentSnackBar();
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) {
-                    return Login();
-                  }),
-                  (_) => false,
+          bloc: widget.forgetBloc,
+          listener: (BuildContext context, state) {
+            if (state.status == ForgetStateStatus.successAccountReset) {
+              Scaffold.of(context)
+                ..showSnackBar(
+                  SnackBar(
+                    content: Text("Account reset successfully."),
+                    backgroundColor: Colors.green,
+                  ),
                 );
-              }
-              if (state.status == ForgetStateStatus.failed) {
-                Scaffold.of(context)
-                  ..showSnackBar(
-                    SnackBar(
-                      duration: Duration(milliseconds: 4000),
-                      content: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: 1,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Text("state.messages[index]");
-                        },
-                      ),
-                      backgroundColor: Colors.red,
+            }
+
+            if (state.status == ForgetStateStatus.resetCompleted) {
+              FocusScope.of(context).requestFocus(FocusNode());
+              Scaffold.of(context).removeCurrentSnackBar();
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) {
+                  return Login();
+                }),
+                (_) => false,
+              );
+            }
+            if (state.status == ForgetStateStatus.failed) {
+              Scaffold.of(context)
+                ..showSnackBar(
+                  SnackBar(
+                    duration: Duration(milliseconds: 4000),
+                    content: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: 1,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Text("state.messages[index]");
+                      },
                     ),
-                  );
-              }
-            },
-            child: StreamBuilder<ForgetState>(
+                    backgroundColor: Colors.red,
+                  ),
+                );
+            }
+          },
+          child: StreamBuilder<ForgetState>(
               stream: widget.forgetBloc,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) return Loading.initial();
@@ -77,15 +77,16 @@ class _ResetPageState extends State<ResetPage> {
                   return Loading.loading();
                 return Loading.initial();
               }),
-        )],
+        )
+      ],
     ));
   }
 }
 
 class ResetForm extends StatefulWidget {
-  final ForgetBloc forgetBloc;
-
   const ResetForm({Key key, this.forgetBloc}) : super(key: key);
+
+  final ForgetBloc forgetBloc;
 
   @override
   _SignUpFormState createState() => _SignUpFormState();
