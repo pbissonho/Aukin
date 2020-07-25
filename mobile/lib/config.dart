@@ -1,1 +1,2 @@
-final apiUrl = "https://youAzureAppName.azurewebsites.net";
+
+final apiUrl = 'https://youAzureAppName.azurewebsites.net';

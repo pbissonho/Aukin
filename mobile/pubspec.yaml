@@ -6,27 +6,32 @@ publish_to: none
 dependencies:
   clip_shadow: ^0.2.1
   corsac_jwt: ^0.2.2
+  dartz: ^0.9.1
   dio: ^3.0.9
   equatable: ^1.1.1
   flutter:
     sdk: flutter
-  flutter_bloc: ^5.0.0
+  flutter_bloc: ^6.0.1
   flutter_custom_clippers: ^1.1.1
   google_fonts: ^1.0.0
   identity_auth:
     path: packages/identity_auth
   identity_client:
     path: packages/identity_client/
-  koin_flutter: ^0.9.1
+  intl: ^0.16.1
   koin: ^0.12.1
+  koin_flutter: ^0.9.4
+  koin_bloc: ^0.1.0
+  meta: ^1.1.8
   pin_code_fields: ^3.1.2
   rxdart: ^0.24.1
 
 dev_dependencies:
-  effective_dart: ^1.2.1
+  pedantic: ^1.9.0
   flutter_test:
     sdk: flutter
   koin_test: ^0.11.6
+  mockito:
 
 environment:
   sdk: ">=2.8.0 <3.0.0"

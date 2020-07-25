@@ -59,7 +59,7 @@ class _AppState extends State<App> {
       navigatorKey: _navigatorKey,
       builder: (context, child) {
         return BlocListener<AuthenticationBloc, AuthenticationState>(
-          bloc: get<AuthenticationBloc>(),
+          cubit: get<AuthenticationBloc>(),
           listener: (context, state) {
             if (state is AuthenticationAuthenticated) {
               ;

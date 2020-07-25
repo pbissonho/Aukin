@@ -31,14 +31,14 @@ class _SignUpPageState extends State<SignUpPage> with ScopeStateMixin {
           signUpBloc: _signUpBloc,
         ),
         BlocListener<SignUpBloc, SignUpState>(
-            bloc: _signUpBloc,
+            cubit: _signUpBloc,
             listener: (BuildContext context, state) {
               if (state is SuccessRegistered) {
                 Scaffold.of(context)
                   ..showSnackBar(
                     SnackBar(
                       content:
-                          Text("Your account has been successfully created."),
+                          Text('Your account has been successfully created.'),
                       backgroundColor: Colors.green,
                     ),
                   );
@@ -114,7 +114,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   @override
   Widget build(BuildContext context) {
-    double textFieldDistance = 19;
+    var textFieldDistance = 19.0;
     return Form(
       key: _formKey,
       child: Padding(
@@ -129,7 +129,7 @@ class _SignUpFormState extends State<SignUpForm> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text.rich(
-                        TextSpan(text: "Sign \n     Up"),
+                        TextSpan(text: 'Sign \n     Up'),
                         style: GoogleFonts.quicksand(
                             fontSize: 55,
                             fontWeight: FontWeight.w500,
@@ -140,14 +140,14 @@ class _SignUpFormState extends State<SignUpForm> {
                       ),
                       CustomTextField(
                           controller: _nameController,
-                          labelTest: "Name",
+                          labelTest: 'Name',
                           textInputType: TextInputType.text),
                       SizedBox(
                         height: textFieldDistance,
                       ),
                       CustomTextField(
                         controller: _emailController,
-                        labelTest: "Email",
+                        labelTest: 'Email',
                         textInputType: TextInputType.emailAddress,
                       ),
                       SizedBox(
@@ -155,7 +155,7 @@ class _SignUpFormState extends State<SignUpForm> {
                       ),
                       CustomTextField(
                         controller: _passwordController,
-                        labelTest: "Password",
+                        labelTest: 'Password',
                         textInputType: TextInputType.visiblePassword,
                         obscureText: true,
                       ),
@@ -164,7 +164,7 @@ class _SignUpFormState extends State<SignUpForm> {
                       ),
                       CustomTextField(
                         controller: _passwordConfirmController,
-                        labelTest: "Confirm Password",
+                        labelTest: 'Confirm Password',
                         textInputType: TextInputType.visiblePassword,
                         obscureText: true,
                       ),
@@ -172,7 +172,7 @@ class _SignUpFormState extends State<SignUpForm> {
                         height: 35,
                       ),
                       LogInButton(
-                        buttonText: "Sign In",
+                        buttonText: 'Sign In',
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             widget.signUpBloc.add(

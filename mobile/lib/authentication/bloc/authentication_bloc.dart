@@ -2,14 +2,13 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:koin_flutter/koin_bloc.dart';
 import 'package:identity_auth/identity_auth.dart';
 
 part 'authentication_event.dart';
 part 'authentication_state.dart';
 
-class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState>
-    implements Disposable {
+class AuthenticationBloc
+    extends Bloc<AuthenticationEvent, AuthenticationState> {
   AuthenticationBloc(IdentiyAuth userRepository)
       : assert(userRepository != null),
         _userRepository = userRepository,
@@ -29,7 +28,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState>
     if (event is AuthenticationStatusChanged) {
       yield _mapAuthenticationStatusChangedToState(event);
     } else if (event is LoggedOut) {
-      _userRepository.signOut();
+      await _userRepository.signOut();
     }
   }
 
@@ -52,7 +51,4 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState>
     await _subscription?.cancel();
     return super.close();
   }
-
-  @override
-  void dispose() => close();
 }

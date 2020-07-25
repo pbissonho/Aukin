@@ -3,13 +3,12 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:identity_auth/identity_auth.dart';
-import 'package:koin_flutter/koin_bloc.dart';
 import 'package:meta/meta.dart';
 
 part 'forget_event.dart';
 part 'forget_state.dart';
 
-class ForgetBloc extends Bloc<ForgetEvent, ForgetState> implements Disposable {
+class ForgetBloc extends Bloc<ForgetEvent, ForgetState> {
   ForgetBloc(this.identiyAuth) : super(ForgetState());
 
   final IdentiyAuth identiyAuth;
@@ -64,7 +63,4 @@ class ForgetBloc extends Bloc<ForgetEvent, ForgetState> implements Disposable {
       }
     }
   }
-
-  @override
-  void dispose() => close();
 }

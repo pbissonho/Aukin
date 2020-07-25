@@ -30,14 +30,14 @@ class _SignUpPageState extends State<ForgetPage> with ScopeStateMixin {
           signUpBloc: _forgetBloc,
         ),
         BlocListener<ForgetBloc, ForgetState>(
-            bloc: _forgetBloc,
+            cubit: _forgetBloc,
             listener: (BuildContext context, state) {
               if (state.status == ForgetStateStatus.successForgetCodeSend) {
                 Scaffold.of(context)
                   ..showSnackBar(
                     SnackBar(
                       content: Text(
-                          "A verification code has been sent to your email."),
+                          'A verification code has been sent to your email.'),
                       backgroundColor: Colors.green,
                     ),
                   );
@@ -62,7 +62,7 @@ class _SignUpPageState extends State<ForgetPage> with ScopeStateMixin {
                         shrinkWrap: true,
                         itemCount: 1,
                         itemBuilder: (BuildContext context, int index) {
-                          return Text("state.messages[index]");
+                          return Text('state.messages[index]');
                         },
                       ),
                       backgroundColor: Colors.red,
@@ -76,12 +76,15 @@ class _SignUpPageState extends State<ForgetPage> with ScopeStateMixin {
                   var data = snapshot.data;
 
                   if (!snapshot.hasData) return Loading.initial();
-                  if (snapshot.data.status == ForgetStateStatus.initial)
+                  if (snapshot.data.status == ForgetStateStatus.initial) {
                     return Loading.initial();
-                  if (data.status == ForgetStateStatus.failed)
+                  }
+                  if (data.status == ForgetStateStatus.failed) {
                     return Loading.failed();
-                  if (snapshot.data.status == ForgetStateStatus.loading)
+                  }
+                  if (snapshot.data.status == ForgetStateStatus.loading) {
                     return Loading.loading();
+                  }
                   return Loading.initial();
                 })),
       ],
@@ -111,7 +114,7 @@ class _SignUpFormState extends State<ForgetForm> {
 
   @override
   Widget build(BuildContext context) {
-    double textFieldDistance = 19;
+    var textFieldDistance = 19.0;
     return Form(
       key: _formKey,
       child: Padding(
@@ -126,7 +129,7 @@ class _SignUpFormState extends State<ForgetForm> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text.rich(
-                        TextSpan(text: "Forget password"),
+                        TextSpan(text: 'Forget password'),
                         style: GoogleFonts.quicksand(
                             fontSize: 40,
                             fontWeight: FontWeight.w500,
@@ -137,14 +140,14 @@ class _SignUpFormState extends State<ForgetForm> {
                       ),
                       CustomTextField(
                         controller: _emailController,
-                        labelTest: "Email",
+                        labelTest: 'Email',
                         textInputType: TextInputType.emailAddress,
                       ),
                       SizedBox(
                         height: textFieldDistance,
                       ),
                       LogInButton(
-                        buttonText: "Send email code.",
+                        buttonText: 'Send email code.',
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             widget.signUpBloc.add(SendEmailEvent(

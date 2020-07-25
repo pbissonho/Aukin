@@ -12,12 +12,6 @@ class SimpleBlocDelegate extends BlocObserver {
   }
 
   @override
-  void onError(Bloc bloc, Object error, StackTrace stacktrace) {
-    print('onError ${bloc.runtimeType} $error $stacktrace');
-    super.onError(bloc, error, stacktrace);
-  }
-
-  @override
   void onTransition(Bloc bloc, Transition transition) {
     print('onTransition ${bloc.runtimeType} $transition');
     super.onTransition(bloc, transition);

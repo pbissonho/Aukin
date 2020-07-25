@@ -7,7 +7,7 @@ var color = Color(0xff5d6abe);
 class ArroBack extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    double paddingTop = MediaQuery.of(context).padding.top;
+    var paddingTop = MediaQuery.of(context).padding.top;
     return Align(
       alignment: Alignment.topLeft,
       child: Padding(

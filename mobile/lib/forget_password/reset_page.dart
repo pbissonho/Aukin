@@ -25,13 +25,13 @@ class _ResetPageState extends State<ResetPage> {
           forgetBloc: widget.forgetBloc,
         ),
         BlocListener<ForgetBloc, ForgetState>(
-          bloc: widget.forgetBloc,
+          cubit: widget.forgetBloc,
           listener: (BuildContext context, state) {
             if (state.status == ForgetStateStatus.successAccountReset) {
               Scaffold.of(context)
                 ..showSnackBar(
                   SnackBar(
-                    content: Text("Account reset successfully."),
+                    content: Text('Account reset successfully.'),
                     backgroundColor: Colors.green,
                   ),
                 );
@@ -57,7 +57,7 @@ class _ResetPageState extends State<ResetPage> {
                       shrinkWrap: true,
                       itemCount: 1,
                       itemBuilder: (BuildContext context, int index) {
-                        return Text("state.messages[index]");
+                        return Text('state.messages[index]');
                       },
                     ),
                     backgroundColor: Colors.red,
@@ -69,12 +69,15 @@ class _ResetPageState extends State<ResetPage> {
               stream: widget.forgetBloc,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) return Loading.initial();
-                if (snapshot.data.status == ForgetStateStatus.initial)
+                if (snapshot.data.status == ForgetStateStatus.initial) {
                   return Loading.initial();
-                if (snapshot.data.status == ForgetStateStatus.failed)
+                }
+                if (snapshot.data.status == ForgetStateStatus.failed) {
                   return Loading.failed();
-                if (snapshot.data.status == ForgetStateStatus.loading)
+                }
+                if (snapshot.data.status == ForgetStateStatus.loading) {
                   return Loading.loading();
+                }
                 return Loading.initial();
               }),
         )
@@ -107,7 +110,7 @@ class _SignUpFormState extends State<ResetForm> {
 
   @override
   Widget build(BuildContext context) {
-    double textFieldDistance = 19;
+    var textFieldDistance = 19.0;
     return Form(
       key: _formKey,
       child: Padding(
@@ -122,7 +125,7 @@ class _SignUpFormState extends State<ResetForm> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text.rich(
-                        TextSpan(text: "Reset"),
+                        TextSpan(text: 'Reset'),
                         style: GoogleFonts.quicksand(
                             fontSize: 55,
                             fontWeight: FontWeight.w500,
@@ -139,7 +142,7 @@ class _SignUpFormState extends State<ResetForm> {
                       ),
                       CustomTextField(
                         controller: _passwordController,
-                        labelTest: "New Password",
+                        labelTest: 'New Password',
                         textInputType: TextInputType.visiblePassword,
                         obscureText: true,
                       ),
@@ -148,7 +151,7 @@ class _SignUpFormState extends State<ResetForm> {
                       ),
                       CustomTextField(
                         controller: _passwordConfirmController,
-                        labelTest: "Confirm New Password",
+                        labelTest: 'Confirm New Password',
                         textInputType: TextInputType.visiblePassword,
                         obscureText: true,
                       ),
@@ -156,7 +159,7 @@ class _SignUpFormState extends State<ResetForm> {
                         height: 35,
                       ),
                       LogInButton(
-                        buttonText: "Reset",
+                        buttonText: 'Reset',
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             widget.forgetBloc.add(ResetAccountEvent(

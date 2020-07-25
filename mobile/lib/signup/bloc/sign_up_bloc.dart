@@ -1,11 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:identity_client/identity_client.dart';
-import 'package:koin_flutter/koin_bloc.dart';
 
 import 'sign_up_event.dart';
 import 'sign_up_state.dart';
 
-class SignUpBloc extends Bloc<SignUpEvent, SignUpState> with Disposable {
+class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   SignUpBloc(this.identityClient) : super(SignUpStarted());
 
   final IdentityClient identityClient;
@@ -27,17 +26,15 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> with Disposable {
       yield SignUpFailed(error.error.messages);
     } catch (erro) {
       yield SignUpFailed([
-        "An unknown error has occurred.",
+        'An unknown error has occurred.',
       ]);
     }
   }
 
   @override
   Stream<SignUpState> mapEventToState(SignUpEvent event) async* {
-    if (event is CreateUserWithRegisterCredentials)
+    if (event is CreateUserWithRegisterCredentials) {
       yield* _signUpHandler(event);
+    }
   }
-
-  @override
-  void dispose() => close();
 }

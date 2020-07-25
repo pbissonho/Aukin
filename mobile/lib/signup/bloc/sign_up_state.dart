@@ -20,5 +20,6 @@ class SignUpFailed extends SignUpState {
 
   final List<String> messages;
 
+  @override
   List<Object> get props => [messages];
 }

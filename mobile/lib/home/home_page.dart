@@ -16,11 +16,11 @@ class CustomDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: BlocBuilder<UserBloc, IdentiyUser>(
-        bloc: homeBloc,
+        cubit: homeBloc,
         builder: (context, state) {
           var name = state.userName;
 
-          if (name.length >= 1) name = name.substring(0, 1);
+          if (name.isNotEmpty) name = name.substring(0, 1);
 
           return ListView(
             children: <Widget>[
@@ -55,12 +55,6 @@ class _HomePageState extends State<HomePage> with ScopeStateMixin {
       appBar: AppBar(title: const Text('Home')),
       body: Column(
         children: <Widget>[
-          Container(
-              child: Center(
-                  child: Text(
-            "Hello",
-            style: TextStyle(fontSize: 32),
-          ))),
           FutureBuilder<String>(
             future: currentScope.get<RepositorySample>().get(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {

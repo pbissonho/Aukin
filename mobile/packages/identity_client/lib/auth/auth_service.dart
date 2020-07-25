@@ -36,13 +36,14 @@ class IdentityService {
       if (response.statusCode == 200) {
         var token = IdentityToken.fromJson(response.data);
         return token;
-      } else if (response.statusCode == 400) {
+      } else
         throw ServerException(ErrorModel.fromJson(response.data));
-      }
     } on DioError catch (error) {
       if (error.response.statusCode == 400) {
         throw ServerException(
             ErrorModel.fromJson(json.decode(error.response.data)));
+      } else {
+        rethrow;
       }
     }
   }

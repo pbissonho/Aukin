@@ -8,12 +8,12 @@ class RepositorySample {
   Future<String> get() async {
     Response response;
 
-    response = await dio.get("/api/sample/read");
+    response = await dio.get('/api/sample/read');
     return response.data;
   }
 
   Future<String> post() async {
-    var response = await dio.post("/api/sample/write");
+    var response = await dio.post('/api/sample/write');
     return response.data;
   }
 }
@@ -24,11 +24,11 @@ class RepositorySampleFake implements RepositorySample {
 
   @override
   Future<String> get() async {
-    return "Hello";
+    return 'Hello';
   }
 
   @override
   Future<String> post() async {
-    return "Hello";
+    return 'Hello';
   }
 }

@@ -1,12 +1,11 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:koin_flutter/koin_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:identity_auth/identity_auth.dart';
 
 part 'user_event.dart';
 
-class UserBloc extends Bloc<UserEvent, IdentiyUser> implements Disposable {
+class UserBloc extends Bloc<UserEvent, IdentiyUser> {
   UserBloc(this.identiyAuth)
       : super(IdentiyUser(userName: '', email: '', roles: [])) {
     _subscription = identiyAuth.currentUser.listen((onData) {
@@ -31,7 +30,4 @@ class UserBloc extends Bloc<UserEvent, IdentiyUser> implements Disposable {
     _subscription.cancel();
     return super.close();
   }
-
-  @override
-  void dispose() => close();
 }

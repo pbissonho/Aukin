@@ -78,14 +78,14 @@ class HelloPage extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Text(
-                  "Hello. ",
+                  'Hello. ',
                   style: GoogleFonts.questrial(
                       fontSize: 60,
                       fontWeight: FontWeight.w700,
                       color: Colors.white),
                 ),
                 Text(
-                  "Lets Get Started!. \n",
+                  'Lets Get Started!. \n',
                   style: GoogleFonts.questrial(
                       fontSize: 30,
                       fontWeight: FontWeight.w500,
@@ -96,7 +96,7 @@ class HelloPage extends StatelessWidget {
                 ),
                 CustomButton(
                   textColor: color,
-                  buttonText: "Sign Up",
+                  buttonText: 'Sign Up',
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
                       builder: (c) {
@@ -110,7 +110,7 @@ class HelloPage extends StatelessWidget {
                 ),
                 CustomButton(
                   textColor: Colors.grey,
-                  buttonText: "Sign Up with Google",
+                  buttonText: 'Sign Up with Google',
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
                       builder: (c) {

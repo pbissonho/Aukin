@@ -34,7 +34,7 @@ class _LoginState extends State<Login> with ScopeStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocListener<LoginBloc, LoginState>(
-          bloc: currentScope.get(),
+          cubit: loginBloc,
           listener: (context, state) {
             if (state is LoginFailure) {
               Scaffold.of(context)
@@ -96,7 +96,7 @@ class _LoginFormState extends State<LoginForm> {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       Text(
-                        "Log In",
+                        'Log In',
                         style: GoogleFonts.quicksand(
                             fontSize: 55,
                             fontWeight: FontWeight.w500,
@@ -107,12 +107,12 @@ class _LoginFormState extends State<LoginForm> {
                       ),
                       CustomTextField(
                         controller: _nameController,
-                        labelTest: "Username",
+                        labelTest: 'Username',
                         textInputType: TextInputType.text,
                       ),
                       CustomTextField(
                         controller: _passwordController,
-                        labelTest: "Password",
+                        labelTest: 'Password',
                         textInputType: TextInputType.visiblePassword,
                         obscureText: true,
                       ),
@@ -120,7 +120,7 @@ class _LoginFormState extends State<LoginForm> {
                         height: 35,
                       ),
                       LogInButton(
-                        buttonText: "Log In",
+                        buttonText: 'Log In',
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             FocusScope.of(context).requestFocus(FocusNode());

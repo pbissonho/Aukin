@@ -28,18 +28,21 @@ class _CodePageState extends State<CodePage> {
           forgetBloc: widget.forgetBloc,
         ),
         BlocListener<ForgetBloc, ForgetState>(
-          bloc: widget.forgetBloc,
+          cubit: widget.forgetBloc,
           child: StreamBuilder<ForgetState>(
               stream: widget.forgetBloc,
               builder: (context, snapshot) {
                 var data = snapshot.data;
                 if (!snapshot.hasData) return Loading.initial();
-                if (snapshot.data.status == ForgetStateStatus.initial)
+                if (snapshot.data.status == ForgetStateStatus.initial) {
                   return Loading.initial();
-                if (data.status == ForgetStateStatus.failed)
+                }
+                if (data.status == ForgetStateStatus.failed) {
                   return Loading.failed();
-                if (snapshot.data.status == ForgetStateStatus.loading)
+                }
+                if (snapshot.data.status == ForgetStateStatus.loading) {
                   return Loading.loading();
+                }
                 return Loading.initial();
               }),
           listener: (BuildContext context, state) {
@@ -47,7 +50,7 @@ class _CodePageState extends State<CodePage> {
               Scaffold.of(context)
                 ..showSnackBar(
                   SnackBar(
-                    content: Text("Code successfully verified."),
+                    content: Text('Code successfully verified.'),
                     backgroundColor: Colors.green,
                   ),
                 );
@@ -73,7 +76,7 @@ class _CodePageState extends State<CodePage> {
                       shrinkWrap: true,
                       itemCount: 1,
                       itemBuilder: (BuildContext context, int index) {
-                        return Text("state.messages[index]");
+                        return Text('state.messages[index]');
                       },
                     ),
                     backgroundColor: Colors.red,
@@ -111,7 +114,7 @@ class _CodeFormFormState extends State<CodeForm> {
 
   @override
   Widget build(BuildContext context) {
-    double textFieldDistance = 19;
+    var textFieldDistance = 19.0;
     return Form(
       key: _formKey,
       child: Padding(
@@ -126,14 +129,14 @@ class _CodeFormFormState extends State<CodeForm> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text.rich(
-                        TextSpan(text: "Code Verification"),
+                        TextSpan(text: 'Code Verification'),
                         style: GoogleFonts.quicksand(
                             fontSize: 40,
                             fontWeight: FontWeight.w500,
                             color: Color(0xff565558)),
                       ),
                       Text.rich(
-                        TextSpan(text: "Enter the code sento to your email."),
+                        TextSpan(text: 'Enter the code sento to your email.'),
                         style: GoogleFonts.quicksand(
                             fontSize: 28,
                             fontWeight: FontWeight.w500,
@@ -172,7 +175,7 @@ class _CodeFormFormState extends State<CodeForm> {
                           errorAnimationController: errorController,
                           controller: _codeController,
                           onCompleted: (v) {
-                            print("Completed");
+                            print('Completed');
                           },
                           onChanged: (value) {
                             print(value);
@@ -181,7 +184,7 @@ class _CodeFormFormState extends State<CodeForm> {
                             });
                           },
                           beforeTextPaste: (text) {
-                            print("Allowing to paste $text");
+                            print('Allowing to paste $text');
                             //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
                             //but you can show anything you want here, like your pop up saying wrong paste format or etc
                             return true;
@@ -190,7 +193,7 @@ class _CodeFormFormState extends State<CodeForm> {
                         height: textFieldDistance,
                       ),
                       LogInButton(
-                        buttonText: "Code",
+                        buttonText: 'Code',
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             widget.forgetBloc.add(VerifiyCodeEvent(
