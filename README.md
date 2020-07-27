@@ -1,6 +1,6 @@
-# Sign up/Log in
+# Aukin
 
-A simple application to demonstrate the Sign up and Log in flow using Flutter and ASP.Net Core.
+A simple application to demonstrate authentication using Flutter and ASP.Net Core.
 
 ## Design
 
@@ -19,6 +19,12 @@ Design created by [Andrea](https://dribbble.com/shots/5601302-Mobile-Sign-Up-UI)
 - Sign up
 - Loggout
 - Password reset
+
+## Next features
+
+- Email verification
+- Two-factor authentication
+- Profile editing
 
 
 ## Mobile
@@ -64,9 +70,6 @@ Then the application will use the services/repositories fakes.
   }
 ```
 
-  
-
-
 ## Backend
 
 ### Core packages used:
@@ -76,7 +79,6 @@ Then the application will use the services/repositories fakes.
 - Identity - Manages users, passwords, profile data,tokens.
 - NetDevPack.Identity - A set of implementations to assist help use of Identity
 - Sendgrid - Email service
-
 
 
 
