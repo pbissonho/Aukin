@@ -30,4 +30,7 @@ class UserBloc extends Bloc<UserEvent, IdentiyUser> {
     _subscription.cancel();
     return super.close();
   }
+
+  @override
+  String toString() => state.toString();
 }

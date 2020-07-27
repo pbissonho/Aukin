@@ -31,4 +31,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
     if (event is LoginWithCredentials) yield* _signInWithCredentials(event);
   }
+
+  @override
+  String toString() {
+    return state.toString();
+  }
 }

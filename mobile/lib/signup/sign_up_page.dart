@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:authentication/login/login_page.dart';
 import 'package:authentication/shared/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:koin_devtools/koin_devtools.dart';
 
 import 'bloc/bloc.dart';
 import 'package:koin_flutter/koin_flutter.dart';
@@ -25,6 +26,8 @@ class _SignUpPageState extends State<SignUpPage> with ScopeStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+            endDrawer: KoinDevTools(),
+
         body: Stack(
       children: <Widget>[
         SignUpForm(

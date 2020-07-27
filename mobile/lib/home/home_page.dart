@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:authentication/home/bloc/user_bloc.dart';
+import 'package:koin_devtools/koin_devtools.dart';
 import 'package:koin_flutter/koin_flutter.dart';
 import '../authentication/bloc/authentication_bloc.dart';
 import 'package:identity_auth/identity_auth.dart';
@@ -40,6 +41,29 @@ class CustomDrawer extends StatelessWidget {
   }
 }
 
+
+
+
+
+class Page extends StatefulWidget {
+  @override
+  _PageState createState() => _PageState();
+}
+
+class _PageState extends State<Page> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+     /// Just insert the KoinDevTools Widget somewhere in your application or use showDevTools;
+      endDrawer: KoinDevTools(),
+      body: IconButton(icon: Text('DevTools'), onPressed: () {
+        // Or use this
+        showDevTools(context);
+      },),
+    );
+  }
+}
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -49,6 +73,7 @@ class _HomePageState extends State<HomePage> with ScopeStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      endDrawer: KoinDevTools(),
       drawer: CustomDrawer(
         homeBloc: currentScope.get(),
       ),

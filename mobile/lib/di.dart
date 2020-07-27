@@ -39,4 +39,3 @@ final authModule = Module()
   ..scopeOneCubit<SignUpBloc, SignUpPage>((scope) => SignUpBloc(scope.get()))
   ..scopeOneCubit<ForgetBloc, ForgetPage>((scope) => ForgetBloc(scope.get()))
   ..scopeOneCubit<UserBloc, HomePage>((scope) => UserBloc(scope.get()));
-  

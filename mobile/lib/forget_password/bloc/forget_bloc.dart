@@ -63,4 +63,9 @@ class ForgetBloc extends Bloc<ForgetEvent, ForgetState> {
       }
     }
   }
+
+  @override
+  String toString() {
+    return state.toString();
+  }
 }

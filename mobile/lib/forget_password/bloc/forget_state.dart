@@ -38,5 +38,7 @@ class ForgetState with EquatableMixin {
   List<Object> get props => [status, email, token];
 
   @override
-  bool get stringify => true;
+  String toString() {
+    return 'Email: $email\n, Reset Token: $token\n Status: $status';
+  }
 }

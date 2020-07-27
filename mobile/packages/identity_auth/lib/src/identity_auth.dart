@@ -44,6 +44,11 @@ class IdentiyUser {
   final String email;
   final List<String> roles;
   final List<IdentiyClaim> accessClaims;
+
+  @override
+  String toString() {
+   return "Username: $userName\n Email: $email\n Roles: $roles\n Claims: $accessClaims";
+  }
 }
 
 enum UserAuthenticationStatus {

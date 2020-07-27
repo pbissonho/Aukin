@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:authentication/shared/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:koin_devtools/koin_devtools.dart';
 import 'package:koin_flutter/koin_flutter.dart';
 import 'bloc/login_bloc.dart';
 import 'bloc/login_event.dart';
@@ -33,6 +34,7 @@ class _LoginState extends State<Login> with ScopeStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      endDrawer: KoinDevTools(),
       body: BlocListener<LoginBloc, LoginState>(
           cubit: loginBloc,
           listener: (context, state) {

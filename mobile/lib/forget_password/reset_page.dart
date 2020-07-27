@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:authentication/login/login_page.dart';
 import 'package:authentication/shared/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:koin_devtools/koin_devtools.dart';
 import 'bloc/forget_bloc.dart';
 
 class ResetPage extends StatefulWidget {
@@ -19,70 +20,71 @@ class _ResetPageState extends State<ResetPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        endDrawer: KoinDevTools(),
         body: Stack(
-      children: <Widget>[
-        ResetForm(
-          forgetBloc: widget.forgetBloc,
-        ),
-        BlocListener<ForgetBloc, ForgetState>(
-          cubit: widget.forgetBloc,
-          listener: (BuildContext context, state) {
-            if (state.status == ForgetStateStatus.successAccountReset) {
-              Scaffold.of(context)
-                ..showSnackBar(
-                  SnackBar(
-                    content: Text('Account reset successfully.'),
-                    backgroundColor: Colors.green,
-                  ),
-                );
-            }
+          children: <Widget>[
+            ResetForm(
+              forgetBloc: widget.forgetBloc,
+            ),
+            BlocListener<ForgetBloc, ForgetState>(
+              cubit: widget.forgetBloc,
+              listener: (BuildContext context, state) {
+                if (state.status == ForgetStateStatus.successAccountReset) {
+                  Scaffold.of(context)
+                    ..showSnackBar(
+                      SnackBar(
+                        content: Text('Account reset successfully.'),
+                        backgroundColor: Colors.green,
+                      ),
+                    );
+                }
 
-            if (state.status == ForgetStateStatus.resetCompleted) {
-              FocusScope.of(context).requestFocus(FocusNode());
-              Scaffold.of(context).removeCurrentSnackBar();
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) {
-                  return Login();
-                }),
-                (_) => false,
-              );
-            }
-            if (state.status == ForgetStateStatus.failed) {
-              Scaffold.of(context)
-                ..showSnackBar(
-                  SnackBar(
-                    duration: Duration(milliseconds: 4000),
-                    content: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: 1,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Text('state.messages[index]');
-                      },
-                    ),
-                    backgroundColor: Colors.red,
-                  ),
-                );
-            }
-          },
-          child: StreamBuilder<ForgetState>(
-              stream: widget.forgetBloc,
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) return Loading.initial();
-                if (snapshot.data.status == ForgetStateStatus.initial) {
-                  return Loading.initial();
+                if (state.status == ForgetStateStatus.resetCompleted) {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  Scaffold.of(context).removeCurrentSnackBar();
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) {
+                      return Login();
+                    }),
+                    (_) => false,
+                  );
                 }
-                if (snapshot.data.status == ForgetStateStatus.failed) {
-                  return Loading.failed();
+                if (state.status == ForgetStateStatus.failed) {
+                  Scaffold.of(context)
+                    ..showSnackBar(
+                      SnackBar(
+                        duration: Duration(milliseconds: 4000),
+                        content: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: 1,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Text('state.messages[index]');
+                          },
+                        ),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
                 }
-                if (snapshot.data.status == ForgetStateStatus.loading) {
-                  return Loading.loading();
-                }
-                return Loading.initial();
-              }),
-        )
-      ],
-    ));
+              },
+              child: StreamBuilder<ForgetState>(
+                  stream: widget.forgetBloc,
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) return Loading.initial();
+                    if (snapshot.data.status == ForgetStateStatus.initial) {
+                      return Loading.initial();
+                    }
+                    if (snapshot.data.status == ForgetStateStatus.failed) {
+                      return Loading.failed();
+                    }
+                    if (snapshot.data.status == ForgetStateStatus.loading) {
+                      return Loading.loading();
+                    }
+                    return Loading.initial();
+                  }),
+            )
+          ],
+        ));
   }
 }
 

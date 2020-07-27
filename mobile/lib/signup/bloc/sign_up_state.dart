@@ -4,6 +4,9 @@ abstract class SignUpState extends Equatable {
   const SignUpState();
 
   @override
+  bool get stringify => true;
+  
+  @override
   List<Object> get props => [];
 }
 

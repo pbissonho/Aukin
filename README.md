@@ -8,6 +8,11 @@ A simple application to demonstrate the Sign up and Log in flow using Flutter an
 
 Design created by [Andrea](https://dribbble.com/shots/5601302-Mobile-Sign-Up-UI) 
 
+## Demo
+
+![alt-text](https://github.com/pbissonho/Authentication-Flow-Flutter/blob/master/authapp.gif)
+
+
 ## Current features
 
 - Log in

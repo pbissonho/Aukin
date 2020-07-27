@@ -9,28 +9,23 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'bloc/forget_bloc.dart';
 import 'reset_page.dart';
 
-class CodePage extends StatefulWidget {
-  const CodePage({Key key, @required this.forgetBloc}) : super(key: key);
-
+class CodePage extends StatelessWidget {
   final ForgetBloc forgetBloc;
 
-  @override
-  _CodePageState createState() => _CodePageState();
-}
+  const CodePage({Key key, this.forgetBloc}) : super(key: key);
 
-class _CodePageState extends State<CodePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Stack(
       children: <Widget>[
         CodeForm(
-          forgetBloc: widget.forgetBloc,
+          forgetBloc: forgetBloc,
         ),
         BlocListener<ForgetBloc, ForgetState>(
-          cubit: widget.forgetBloc,
+          cubit: forgetBloc,
           child: StreamBuilder<ForgetState>(
-              stream: widget.forgetBloc,
+              stream: forgetBloc,
               builder: (context, snapshot) {
                 var data = snapshot.data;
                 if (!snapshot.hasData) return Loading.initial();
@@ -62,7 +57,7 @@ class _CodePageState extends State<CodePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) {
-                  return ResetPage(forgetBloc: widget.forgetBloc);
+                  return ResetPage(forgetBloc: forgetBloc);
                 }),
               );
             }
@@ -136,7 +131,7 @@ class _CodeFormFormState extends State<CodeForm> {
                             color: Color(0xff565558)),
                       ),
                       Text.rich(
-                        TextSpan(text: 'Enter the code sento to your email.'),
+                        TextSpan(text: 'Enter the code sent to your email.'),
                         style: GoogleFonts.quicksand(
                             fontSize: 28,
                             fontWeight: FontWeight.w500,
@@ -170,30 +165,19 @@ class _CodeFormFormState extends State<CodeForm> {
                               activeColor: color),
                           backgroundColor: Colors.white,
                           animationDuration: Duration(milliseconds: 300),
-                          //backgroundColor: Colors.blue.shade50,
                           enableActiveFill: true,
                           errorAnimationController: errorController,
                           controller: _codeController,
-                          onCompleted: (v) {
-                            print('Completed');
-                          },
-                          onChanged: (value) {
-                            print(value);
-                            setState(() {
-                              // currentText = value;
-                            });
-                          },
+                          onCompleted: (v) {},
+                          onChanged: (value) {},
                           beforeTextPaste: (text) {
-                            print('Allowing to paste $text');
-                            //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
-                            //but you can show anything you want here, like your pop up saying wrong paste format or etc
                             return true;
                           }),
                       SizedBox(
                         height: textFieldDistance,
                       ),
                       LogInButton(
-                        buttonText: 'Code',
+                        buttonText: 'Next',
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             widget.forgetBloc.add(VerifiyCodeEvent(
