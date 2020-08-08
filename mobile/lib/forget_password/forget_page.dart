@@ -14,25 +14,17 @@ class ForgetPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<ForgetPage> with ScopeStateMixin {
-  ForgetBloc _forgetBloc;
-
-  @override
-  void initState() {
-    _forgetBloc = currentScope.get<ForgetBloc>();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final bloc = currentScope.get<ForgetBloc>();
+
     return Scaffold(
         endDrawer: KoinDevTools(),
         body: Stack(
           children: <Widget>[
-            ForgetForm(
-              signUpBloc: _forgetBloc,
-            ),
+            BlocProvider.value(value: bloc, child: ForgetForm()),
             BlocListener<ForgetBloc, ForgetState>(
-                cubit: _forgetBloc,
+                cubit: currentScope.get(),
                 listener: (BuildContext context, state) {
                   if (state.status == ForgetStateStatus.successForgetCodeSend) {
                     Scaffold.of(context)
@@ -51,7 +43,8 @@ class _SignUpPageState extends State<ForgetPage> with ScopeStateMixin {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) {
-                        return CodePage(forgetBloc: _forgetBloc);
+                        return BlocProvider.value(
+                            value: bloc, child: CodePage());
                       }),
                     );
                   }
@@ -73,7 +66,7 @@ class _SignUpPageState extends State<ForgetPage> with ScopeStateMixin {
                   }
                 },
                 child: StreamBuilder<ForgetState>(
-                    stream: _forgetBloc,
+                    stream: bloc,
                     builder: (context, snapshot) {
                       var data = snapshot.data;
 
@@ -95,9 +88,7 @@ class _SignUpPageState extends State<ForgetPage> with ScopeStateMixin {
 }
 
 class ForgetForm extends StatefulWidget {
-  const ForgetForm({Key key, this.signUpBloc}) : super(key: key);
-
-  final ForgetBloc signUpBloc;
+  const ForgetForm({Key key}) : super(key: key);
 
   @override
   _SignUpFormState createState() => _SignUpFormState();
@@ -115,7 +106,13 @@ class _SignUpFormState extends State<ForgetForm> {
   }
 
   @override
+  void dispose() {
+    _emailController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    var bloc = context.bloc<ForgetBloc>();
     var textFieldDistance = 19.0;
     return Form(
       key: _formKey,
@@ -152,7 +149,7 @@ class _SignUpFormState extends State<ForgetForm> {
                         buttonText: 'Next',
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
-                            widget.signUpBloc.add(SendEmailEvent(
+                            bloc.add(SendEmailEvent(
                               email: _emailController.value.text,
                             ));
                           }

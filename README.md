@@ -31,7 +31,7 @@ Design created by [Andrea](https://dribbble.com/shots/5601302-Mobile-Sign-Up-UI)
 
 ### Core packages used:
 
-- Koin - Dependency injection/Service Locator
+- Koin and BlocProvider - Dependency injection/Service Locator
 - Bloc/flutter_bloc - State management
 - Fresh(FORK) - Helps implement token refresh. I currently use a [fork](https://github.com/pbissonho/fresh) with some changes.
 - Flutter Secure Storage - Store token data in secure storage

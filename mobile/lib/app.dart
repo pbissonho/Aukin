@@ -7,26 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:koin_flutter/koin_flutter.dart';
 import 'package:koin/koin.dart';
 import 'di.dart';
-
-const primaryColor = Color(0xff5d6abe);
-
-class ColorTheme {
-  static const MaterialColor primarySwatchColor = MaterialColor(
-    _primaryValue,
-    <int, Color>{
-      50: Color(0xFFecedf7),
-      100: Color(0xFFced2ec),
-      200: Color(0xFFaeb5df),
-      300: Color(0xFF8e97d2),
-      400: Color(0xFF7580c8),
-      500: Color(0xFF5d6abe),
-      600: Color(0xFF5562b8),
-      700: Color(0xFF4b57af),
-      800: Color(0xFF414da7),
-    },
-  );
-  static const int _primaryValue = 0xFF5d6abe;
-}
+import 'theme.dart';
 
 class App extends StatefulWidget {
   const App({
@@ -54,15 +35,15 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = get<AuthenticationBloc>();
     return MaterialApp(
       theme: ThemeData(primarySwatch: ColorTheme.primarySwatchColor),
       navigatorKey: _navigatorKey,
       builder: (context, child) {
         return BlocListener<AuthenticationBloc, AuthenticationState>(
-          cubit: get<AuthenticationBloc>(),
+          cubit: bloc,
           listener: (context, state) {
             if (state is AuthenticationAuthenticated) {
-              ;
               _navigator.pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) {
                   return HomePage();

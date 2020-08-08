@@ -33,9 +33,10 @@ final authModule = Module()
       fresh: IdentityFresh(SecureTokenStorage()),
       httpClient: dio,
       identityService: scope.get()))
-  ..single((scope) => IdentiyAuth(scope.get()))
-  ..cubit((scope) => AuthenticationBloc(scope.get()))
-  ..scopeOneCubit<LoginBloc, Login>((scope) => LoginBloc(scope.get()))
+  ..single((scope) => IdentiyAuth(scope.get())) // 2
+  ..cubit((scope) => AuthenticationBloc(scope.get())) // 3
+  ..scopeOneCubit<LoginBloc, Login>((scope) => LoginBloc(scope.get())) // 4
   ..scopeOneCubit<SignUpBloc, SignUpPage>((scope) => SignUpBloc(scope.get()))
   ..scopeOneCubit<ForgetBloc, ForgetPage>((scope) => ForgetBloc(scope.get()))
+  ..scopeOneCubit((scope) => ForgetBloc(scope.get()))
   ..scopeOneCubit<UserBloc, HomePage>((scope) => UserBloc(scope.get()));

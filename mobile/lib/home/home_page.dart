@@ -9,20 +9,14 @@ import 'package:identity_auth/identity_auth.dart';
 import 'repository_sample.dart';
 
 class CustomDrawer extends StatelessWidget {
-  const CustomDrawer({Key key, this.homeBloc}) : super(key: key);
-
-  final UserBloc homeBloc;
-
+  const CustomDrawer({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: BlocBuilder<UserBloc, IdentiyUser>(
-        cubit: homeBloc,
         builder: (context, state) {
           var name = state.userName;
-
           if (name.isNotEmpty) name = name.substring(0, 1);
-
           return ListView(
             children: <Widget>[
               UserAccountsDrawerHeader(
@@ -41,29 +35,6 @@ class CustomDrawer extends StatelessWidget {
   }
 }
 
-
-
-
-
-class Page extends StatefulWidget {
-  @override
-  _PageState createState() => _PageState();
-}
-
-class _PageState extends State<Page> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-     /// Just insert the KoinDevTools Widget somewhere in your application or use showDevTools;
-      endDrawer: KoinDevTools(),
-      body: IconButton(icon: Text('DevTools'), onPressed: () {
-        // Or use this
-        showDevTools(context);
-      },),
-    );
-  }
-}
-
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -72,19 +43,23 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with ScopeStateMixin {
   @override
   Widget build(BuildContext context) {
+    final userBloc = currentScope.get<UserBloc>();
+    final autBloc = currentScope.get<AuthenticationBloc>();
+    final repository = currentScope.get<RepositorySample>();
+
     return Scaffold(
       endDrawer: KoinDevTools(),
-      drawer: CustomDrawer(
-        homeBloc: currentScope.get(),
+      drawer: BlocProvider.value(
+        value: userBloc,
+        child: CustomDrawer(),
       ),
       appBar: AppBar(title: const Text('Home')),
       body: Column(
         children: <Widget>[
           FutureBuilder<String>(
-            future: currentScope.get<RepositorySample>().get(),
+            future: repository.get(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) return Text(snapshot.data);
-
               return CircularProgressIndicator();
             },
           )
@@ -96,10 +71,8 @@ class _HomePageState extends State<HomePage> with ScopeStateMixin {
         children: <Widget>[
           FloatingActionButton(
             heroTag: 1,
-            child: const Icon(Icons.exit_to_app),
-            onPressed: () {
-              get<AuthenticationBloc>().add(LoggedOut());
-            },
+            child: Icon(Icons.exit_to_app),
+            onPressed: () => autBloc.add(LoggedOut()),
           ),
         ],
       ),

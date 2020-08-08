@@ -15,84 +15,74 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> with ScopeStateMixin {
-  SignUpBloc _signUpBloc;
-
-  @override
-  void initState() {
-    _signUpBloc = currentScope.get<SignUpBloc>();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final signUpBloc = currentScope.get<SignUpBloc>();
     return Scaffold(
-            endDrawer: KoinDevTools(),
-
+        endDrawer: KoinDevTools(),
         body: Stack(
-      children: <Widget>[
-        SignUpForm(
-          signUpBloc: _signUpBloc,
-        ),
-        BlocListener<SignUpBloc, SignUpState>(
-            cubit: _signUpBloc,
-            listener: (BuildContext context, state) {
-              if (state is SuccessRegistered) {
-                Scaffold.of(context)
-                  ..showSnackBar(
-                    SnackBar(
-                      content:
-                          Text('Your account has been successfully created.'),
-                      backgroundColor: Colors.green,
-                    ),
-                  );
-              }
+          children: <Widget>[
+            BlocProvider.value(value: signUpBloc, child: SignUpForm()),
+            BlocListener<SignUpBloc, SignUpState>(
+                cubit: signUpBloc,
+                listener: (BuildContext context, state) {
+                  if (state is SuccessRegistered) {
+                    Scaffold.of(context)
+                      ..showSnackBar(
+                        SnackBar(
+                          content: Text(
+                              'Your account has been successfully created.'),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
+                  }
 
-              if (state is SignUpCreatedAccount) {
-                FocusScope.of(context).requestFocus(FocusNode());
-                Scaffold.of(context).removeCurrentSnackBar();
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) {
-                    return Login();
-                  }),
-                  (_) => false,
-                );
-              }
-              if (state is SignUpFailed) {
-                Scaffold.of(context)
-                  ..showSnackBar(
-                    SnackBar(
-                      duration: Duration(milliseconds: 4000),
-                      content: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: state.messages.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Text(state.messages[index]);
-                        },
-                      ),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-              }
-            },
-            child: StreamBuilder<SignUpState>(
-                stream: _signUpBloc,
-                builder: (context, snapshot) {
-                  var data = snapshot.data;
-                  if (snapshot.data is SignUpStarted) return Loading.initial();
-                  if (data is SignUpFailed) return Loading.failed();
-                  if (snapshot.data is SignUpLoading) Loading.loading();
-                  return Loading.initial();
-                })),
-      ],
-    ));
+                  if (state is SignUpCreatedAccount) {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                    Scaffold.of(context).removeCurrentSnackBar();
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) {
+                        return Login();
+                      }),
+                      (_) => false,
+                    );
+                  }
+                  if (state is SignUpFailed) {
+                    Scaffold.of(context)
+                      ..showSnackBar(
+                        SnackBar(
+                          duration: Duration(milliseconds: 4000),
+                          content: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: state.messages.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Text(state.messages[index]);
+                            },
+                          ),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                  }
+                },
+                child: StreamBuilder<SignUpState>(
+                    stream: signUpBloc,
+                    builder: (context, snapshot) {
+                      var data = snapshot.data;
+                      if (snapshot.data is SignUpStarted) {
+                        return Loading.initial();
+                      }
+                      if (data is SignUpFailed) return Loading.failed();
+                      if (snapshot.data is SignUpLoading) Loading.loading();
+                      return Loading.initial();
+                    })),
+          ],
+        ));
   }
 }
 
 class SignUpForm extends StatefulWidget {
-  const SignUpForm({Key key, this.signUpBloc}) : super(key: key);
-
-  final SignUpBloc signUpBloc;
+  const SignUpForm({Key key}) : super(key: key);
 
   @override
   _SignUpFormState createState() => _SignUpFormState();
@@ -117,6 +107,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = context.bloc<SignUpBloc>();
     var textFieldDistance = 19.0;
     return Form(
       key: _formKey,
@@ -178,12 +169,11 @@ class _SignUpFormState extends State<SignUpForm> {
                         buttonText: 'Sign In',
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
-                            widget.signUpBloc.add(
-                                CreateUserWithRegisterCredentials(
-                                    confirmPassword: 'Aa12345678!',
-                                    email: _emailController.value.text,
-                                    name: _nameController.value.text,
-                                    password: 'Aa12345678!'));
+                            bloc.add(CreateUserWithRegisterCredentials(
+                                confirmPassword: 'Aa12345678!',
+                                email: _emailController.value.text,
+                                name: _nameController.value.text,
+                                password: 'Aa12345678!'));
                           }
                         },
                       ),

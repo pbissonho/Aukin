@@ -8,10 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:koin_devtools/koin_devtools.dart';
 import 'package:koin_flutter/koin_flutter.dart';
 import 'bloc/login_bloc.dart';
-import 'bloc/login_event.dart';
 import 'bloc/login_state.dart';
-
-var color = Color(0xff5d6abe);
 
 class Login extends StatefulWidget {
   static Route route() {
@@ -23,16 +20,15 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> with ScopeStateMixin {
-  LoginBloc loginBloc;
-
   @override
   void initState() {
-    loginBloc = currentScope.get();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final loginBloc = currentScope.get<LoginBloc>();
+
     return Scaffold(
       endDrawer: KoinDevTools(),
       body: BlocListener<LoginBloc, LoginState>(
@@ -126,9 +122,9 @@ class _LoginFormState extends State<LoginForm> {
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             FocusScope.of(context).requestFocus(FocusNode());
-                            widget.loginBloc.add(LoginWithCredentials(
+                            widget.loginBloc.signInWithCredentials(
                                 _nameController.value.text,
-                                _passwordController.value.text));
+                                _passwordController.value.text);
                           }
                         },
                       ),

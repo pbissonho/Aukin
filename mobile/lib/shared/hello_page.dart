@@ -4,9 +4,7 @@ import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:authentication/login/login_page.dart';
 import 'package:authentication/signup/sign_up_page.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-var shadown = Color(0xff5E6CB1);
-var color = Color(0xff5d6abe);
+import 'package:authentication/theme.dart';
 
 class BackgroundColor extends StatelessWidget {
   const BackgroundColor({Key key, this.child}) : super(key: key);
@@ -44,14 +42,7 @@ class BackgroundColor extends StatelessWidget {
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight),
               ),
-            ), /*
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                  spreadRadius: 10,
-                  color: shadown,
-                  blurRadius: 40,
-                  offset: Offset(0, 10))
-            ],*/
+            ),
           ),
         ),
         Align(
@@ -67,7 +58,6 @@ class HelloPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // endDrawer: KoinProfiler(),
       backgroundColor: Colors.white,
       body: BackgroundColor(
         child: Padding(
@@ -95,7 +85,7 @@ class HelloPage extends StatelessWidget {
                   height: 60,
                 ),
                 CustomButton(
-                  textColor: color,
+                  textColor: primaryColor,
                   buttonText: 'Sign Up',
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
@@ -173,7 +163,7 @@ class CustomButton extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
-            color: color,
+            color: primaryColor,
             offset: Offset(0, 0),
             blurRadius: 17,
             spreadRadius: 0),

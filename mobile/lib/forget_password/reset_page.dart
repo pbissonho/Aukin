@@ -7,27 +7,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:koin_devtools/koin_devtools.dart';
 import 'bloc/forget_bloc.dart';
 
-class ResetPage extends StatefulWidget {
-  const ResetPage({Key key, @required this.forgetBloc}) : super(key: key);
-
-  final ForgetBloc forgetBloc;
-
-  @override
-  _ResetPageState createState() => _ResetPageState();
-}
-
-class _ResetPageState extends State<ResetPage> {
+class ResetPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         endDrawer: KoinDevTools(),
         body: Stack(
           children: <Widget>[
-            ResetForm(
-              forgetBloc: widget.forgetBloc,
-            ),
+            ResetForm(),
             BlocListener<ForgetBloc, ForgetState>(
-              cubit: widget.forgetBloc,
               listener: (BuildContext context, state) {
                 if (state.status == ForgetStateStatus.successAccountReset) {
                   Scaffold.of(context)
@@ -67,21 +55,19 @@ class _ResetPageState extends State<ResetPage> {
                     );
                 }
               },
-              child: StreamBuilder<ForgetState>(
-                  stream: widget.forgetBloc,
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) return Loading.initial();
-                    if (snapshot.data.status == ForgetStateStatus.initial) {
-                      return Loading.initial();
-                    }
-                    if (snapshot.data.status == ForgetStateStatus.failed) {
-                      return Loading.failed();
-                    }
-                    if (snapshot.data.status == ForgetStateStatus.loading) {
-                      return Loading.loading();
-                    }
-                    return Loading.initial();
-                  }),
+              child: BlocBuilder<ForgetBloc, ForgetState>(
+                  builder: (context, state) {
+                if (state.status == ForgetStateStatus.initial) {
+                  return Loading.initial();
+                }
+                if (state.status == ForgetStateStatus.failed) {
+                  return Loading.failed();
+                }
+                if (state.status == ForgetStateStatus.loading) {
+                  return Loading.loading();
+                }
+                return Loading.initial();
+              }),
             )
           ],
         ));
@@ -89,9 +75,7 @@ class _ResetPageState extends State<ResetPage> {
 }
 
 class ResetForm extends StatefulWidget {
-  const ResetForm({Key key, this.forgetBloc}) : super(key: key);
-
-  final ForgetBloc forgetBloc;
+  const ResetForm({Key key}) : super(key: key);
 
   @override
   _SignUpFormState createState() => _SignUpFormState();
@@ -112,6 +96,8 @@ class _SignUpFormState extends State<ResetForm> {
 
   @override
   Widget build(BuildContext context) {
+    final forgetBloc = context.bloc<ForgetBloc>();
+
     var textFieldDistance = 19.0;
     return Form(
       key: _formKey,
@@ -164,7 +150,7 @@ class _SignUpFormState extends State<ResetForm> {
                         buttonText: 'Reset',
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
-                            widget.forgetBloc.add(ResetAccountEvent(
+                            forgetBloc.add(ResetAccountEvent(
                                 confirmpassword: _passwordController.value.text,
                                 password: _passwordController.value.text));
                           }

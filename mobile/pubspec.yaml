@@ -20,13 +20,12 @@ dependencies:
     path: packages/identity_client/
   intl: ^0.16.1
   koin: ^0.13.0
-  koin_flutter: ^0.9.5
+  koin_flutter: ^0.9.6
   koin_bloc: ^0.1.1
-  koin_devtools: ^0.1.0
+  koin_devtools: ^0.2.0
   meta: ^1.1.8
   pin_code_fields: ^3.1.2
   rxdart: ^0.24.1
-
 dev_dependencies:
   pedantic: ^1.9.0
   flutter_test:

@@ -10,22 +10,20 @@ import 'bloc/forget_bloc.dart';
 import 'reset_page.dart';
 
 class CodePage extends StatelessWidget {
-  final ForgetBloc forgetBloc;
-
-  const CodePage({Key key, this.forgetBloc}) : super(key: key);
+  const CodePage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var bloc = context.bloc<ForgetBloc>();
     return Scaffold(
         body: Stack(
       children: <Widget>[
         CodeForm(
-          forgetBloc: forgetBloc,
+          forgetBloc: bloc,
         ),
         BlocListener<ForgetBloc, ForgetState>(
-          cubit: forgetBloc,
           child: StreamBuilder<ForgetState>(
-              stream: forgetBloc,
+              stream: bloc,
               builder: (context, snapshot) {
                 var data = snapshot.data;
                 if (!snapshot.hasData) return Loading.initial();
@@ -57,7 +55,7 @@ class CodePage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) {
-                  return ResetPage(forgetBloc: forgetBloc);
+                  return BlocProvider.value(value: bloc, child: ResetPage());
                 }),
               );
             }
