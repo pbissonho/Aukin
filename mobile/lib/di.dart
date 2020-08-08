@@ -21,22 +21,21 @@ final prod = [dataModule, authModule];
 final dio = Dio(BaseOptions(baseUrl: apiUrl));
 
 final dataModule = Module()
-  ..single((scope) => IdentityService(Dio(BaseOptions(baseUrl: apiUrl))))
-  ..single((scope) => RepositorySample(dio));
+  ..single((s) => IdentityService(Dio(BaseOptions(baseUrl: apiUrl))))
+  ..single((s) => RepositorySample(dio));
 
 final dataModuleFake = Module()
   ..single<IdentityService>((s) => FakeIdentityService())
   ..single<RepositorySample>((s) => RepositorySampleFake());
 
 final authModule = Module()
-  ..single((scope) => IdentityClient(
+  ..single((s) => IdentityClient(
       fresh: IdentityFresh(SecureTokenStorage()),
       httpClient: dio,
-      identityService: scope.get()))
-  ..single((scope) => IdentiyAuth(scope.get())) // 2
-  ..cubit((scope) => AuthenticationBloc(scope.get())) // 3
-  ..scopeOneCubit<LoginBloc, Login>((scope) => LoginBloc(scope.get())) // 4
-  ..scopeOneCubit<SignUpBloc, SignUpPage>((scope) => SignUpBloc(scope.get()))
-  ..scopeOneCubit<ForgetBloc, ForgetPage>((scope) => ForgetBloc(scope.get()))
-  ..scopeOneCubit((scope) => ForgetBloc(scope.get()))
-  ..scopeOneCubit<UserBloc, HomePage>((scope) => UserBloc(scope.get()));
+      identityService: s.get()))
+  ..single((s) => IdentiyAuth(s.get())) // 2
+  ..cubit((s) => AuthenticationBloc(s.get())) // 3
+  ..scopeOneCubit<LoginBloc, Login>((s) => LoginBloc(s.get())) // 4
+  ..scopeOneCubit<SignUpBloc, SignUpPage>((s) => SignUpBloc(s.get()))
+  ..scopeOneCubit<ForgetBloc, ForgetPage>((s) => ForgetBloc(s.get()))
+  ..scopeOneCubit<UserBloc, HomePage>((s) => UserBloc(s.get()));
