@@ -13,7 +13,6 @@ class UserBloc extends Bloc<UserEvent, IdentiyUser> {
     });
   }
   final IdentiyAuth identiyAuth;
-
   StreamSubscription<IdentiyUser> _subscription;
 
   @override
