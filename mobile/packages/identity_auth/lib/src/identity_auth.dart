@@ -62,6 +62,9 @@ class IdentiyAuth {
 
   final IdentityClient _client;
 
+  final StreamController<IdentiyUser> _userController =
+      StreamController<IdentiyUser>.broadcast();
+
   Stream<UserAuthenticationStatus> get authenticationStatus {
     return _client.authenticationStatus.map((status) {
       switch (status) {
@@ -76,13 +79,16 @@ class IdentiyAuth {
     });
   }
 
-  Future<IdentiyUser> get currentUser async {
-    return await _client.fresh.token.then((token) {
+  Stream<IdentiyUser> get currentUser async* {
+    final result = await _client.fresh.token.then((token) {
       if (token == null)
         return IdentiyUser(
             email: "", userName: "", roles: [], accessClaims: []);
       return IdentiyUser.fromToken(token);
     });
+
+    yield result;
+    yield* _userController.stream;
   }
 
   Future<IdentiyUser> signInWithAccessCredentials({
@@ -93,6 +99,7 @@ class IdentiyAuth {
       username: username,
       password: password,
     );
+    _userController.add(IdentiyUser.fromToken(token));
     return IdentiyUser.fromToken(token);
   }
 
@@ -133,6 +140,8 @@ class IdentiyAuth {
   }
 
   Future<void> signOut() async {
+    _userController
+        .add(IdentiyUser(email: "", userName: "", roles: [], accessClaims: []));
     await _client.unauthenticate();
   }
 }
