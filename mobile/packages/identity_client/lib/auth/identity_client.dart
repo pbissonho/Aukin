@@ -116,6 +116,6 @@ class IdentityClient {
   }
 
   Future<void> unauthenticate() async {
-    await fresh.removeToken();
+    await fresh.clearToken();
   }
 }

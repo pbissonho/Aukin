@@ -47,7 +47,7 @@ class IdentiyUser {
 
   @override
   String toString() {
-   return "Username: $userName\n Email: $email\n Roles: $roles\n Claims: $accessClaims";
+    return "Username: $userName\n Email: $email\n Roles: $roles\n Claims: $accessClaims";
   }
 }
 
@@ -76,8 +76,8 @@ class IdentiyAuth {
     });
   }
 
-  Stream<IdentiyUser> get currentUser async* {
-    yield* _client.fresh.currentToken.map((token) {
+  Future<IdentiyUser> get currentUser async {
+    return await _client.fresh.token.then((token) {
       if (token == null)
         return IdentiyUser(
             email: "", userName: "", roles: [], accessClaims: []);

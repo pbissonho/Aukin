@@ -5,8 +5,7 @@ publish_to: none
 
 dependencies:
   dio: ^3.0.9
-  fresh_dio:
-    path: /home/pedro/Documentos/fresh/packages/fresh_dio/
+  fresh_dio: ^0.2.0
   meta: ^1.1.8
   flutter_secure_storage: ^3.3.3
   
