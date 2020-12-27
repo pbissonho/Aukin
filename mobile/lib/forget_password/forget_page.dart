@@ -108,6 +108,7 @@ class _SignUpFormState extends State<ForgetForm> {
   @override
   void dispose() {
     _emailController.dispose();
+    super.dispose();
   }
 
   @override

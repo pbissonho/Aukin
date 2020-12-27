@@ -290,7 +290,7 @@ packages:
       name: koin
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.14.0"
+    version: "0.14.2"
   koin_bloc:
     dependency: "direct main"
     description:
@@ -304,7 +304,7 @@ packages:
       name: koin_devtools
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.1"
+    version: "0.2.2"
   koin_flutter:
     dependency: "direct main"
     description:
@@ -318,14 +318,14 @@ packages:
       name: koin_test
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.12.0"
+    version: "0.12.1"
   kt_dart:
     dependency: transitive
     description:
       name: kt_dart
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.7.0+1"
+    version: "0.8.0"
   logging:
     dependency: transitive
     description:
